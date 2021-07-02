@@ -3,13 +3,22 @@
 <b>Issued:</b> <i>2nd July 2021</i></br>
 <b>Author:</b> <i>Harry Turner</i></br>
 
+## Context
+This document communicates a design for the Nature View application which is an image processing and management application for camera trap data. It is a web accessible service that allows users involved in camera trap data analysis to upload their images, have them organised by the camera location they came from, have the images automatically analysed by an ML algorithm to detect species present in the image, and then browse the results of that analysis and change classifications where necessary. The added value from this application is to save users time by automating the manual step of detecting animal species in camera trap images.
+
+![Camera Trap](http://www.naturespy.org/wp-content/uploads/2014/05/cameratrap.jpg)
+<i>Camera Trap - [Nature Spy](https://www.naturespy.org/2013/11/joy-camera-trapping/)</i>
+
 ## Stakeholders & Concerns
 
-#### System Administrator
-The system administrator is concerned with simple operation of the system to reduce the maintainance load. (Simpler systems usually need fewer people to keep running). They're concerned with low costs of deployment, both in terms of deployment process and deployment infrastructure.
+#### Thea Business
+The Thea business is concerned with low development cost and maximal user satisfaction by meeting the user requirements as well as possible. The business is also concerned with evolvability of the product as user research is carried out and the problem understanding develops.
 
 #### User
 The user is concerned with ease of use, in both accessing the system and operating it. Users will not tolerate unreasonable delays or faults. 
+
+#### System Administrator
+The system administrator is concerned with simple operation of the system to reduce the maintainance load. (Simpler systems usually need fewer people to keep running). They're concerned with low costs of deployment, both in terms of deployment process and deployment infrastructure.
 
 #### Developer
 The developer is concerned with ease of system evolvability and ease of making changes. 
@@ -46,3 +55,6 @@ This viewpoint addresses the main components in the system. It's modelled with a
  - FastAPI and Celery were chosen for the ML server so that computation heavy tasks can be taken out of the HTTP Request/Response cycle and offloaded onto worker nodes. These workers will carry out image processing tasks and stick the results into the database, they don't need to respond to the client making this is a natural architectural choice.
  - RabbitMQ is a reasonable choice of message queue that is opensource and plays nicely with Celery.
 
+## Todo
+ML Models, Datasets, Training Experiments and Results.
+UI Wireframes.
