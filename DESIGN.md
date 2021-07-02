@@ -27,11 +27,11 @@ The developer is concerned with ease of system evolvability and ease of making c
 
 <i>Because I'm not actively engaging with users whilst building this, these will stay fixed, so I'm putting them here. In reality these would live in Zenhub and evolve constantly.</i>
 
-As a user I want a secure user account so that other people can't see my data.
-As a user I want my sensors displayed on a map so they fit my mental model of organisation.
-As a user I want to upload images directly from my browser because it's easy and I'm familiar with it.
-As a user I want the system to predict which species are in my images so that I don't have to.
-As a user I want the system to store my images so that I can access them easily later on.
+ - As a user I want a secure user account so that other people can't see my data.
+ - As a user I want my sensors displayed on a map so they fit my mental model of organisation.
+ - As a user I want to upload images directly from my browser because it's easy and I'm familiar with it.
+ - As a user I want the system to predict which species are in my images so that I don't have to.
+ - As a user I want the system to store my images so that I can access them easily later on.
 
 ## Data Model
 This viewpoint addresses the data types used within the system. It's modelled with a UML class diagram.
