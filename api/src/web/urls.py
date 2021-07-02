@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .views import CameraViewSet, ImageViewSet
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register('cameras', CameraViewSet)
+router.register('images', ImageViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('web/', include('web.urls'))
+    path('', include(router.urls)),
 ]
