@@ -36,7 +36,7 @@ The developer is concerned with ease of system evolvability and ease of making c
 ## Data Model
 This viewpoint addresses the data types used within the system. It's modelled with a UML class diagram.
 
-![Data Model](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuKhDAyaigLG8BKujKgZcKb0eBSrCKIW5yk8pKxXgOTB1gNd5-KWAYa5yL2MUkOdfgGWLcI0kH04Ns71TNGKb0pqzBIK5g6bS40eX0J62oo4rBmNeCW00)
+![Data Model](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuKhDAyaigLG8BKujKgZcKb0eBSrCKIW5yk8pKxXgOTBEYRcfHOa81SbWFeeIpzp4z5I4YamG5wA02souhgw2ae6UdfQI0jGqBWY5a80OmUMGcfS2T1a0)
 
 ## Use Case
 This viewpoint explains the services offered by the system.
