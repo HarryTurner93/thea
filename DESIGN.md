@@ -1,6 +1,6 @@
 # Software Design Document
 <i>This design document adheres to [IEEE 1016-2009](https://standards.ieee.org/standard/1016-2009.html)</i></br>
-<i>All UML diagrams are created with [Plant UML](https://plantuml.com/)</i> 
+<i>All UML diagrams are created with [Plant UML](https://plantuml.com/)</i><br>
 <b>Issued:</b> <i>2nd July 2021</i></br>
 <b>Author:</b> <i>Harry Turner</i></br>
 
@@ -58,7 +58,7 @@ This viewpoint addresses the main components in the system. It's modelled with a
 
 ## Image Upload 
 This viewpoint explains how the components interact when a user uploads an image. It is modelled with a UML Sequence Diagram.
-![Sequence Diagram](http://www.plantuml.com/plantuml/png/VL4nRiCm3Dpr2etjaCcRXo10ExQJXuu6OnEkK5asHBf5VbyMbgceWB8u37btlACkn11vcxs1WPTeNxp3m1OeLMQLiHlS2jBzm2jX_COey_odWBo_TGT2QpC2mnK8RTT8NxwvyteKG5eROvADqpclQUs4tAyHoKq1ntwB_kdPP4id0U-qrXQeUxMkaU76lPjXGg5tJS4Jshe4mee1PVOoStmhzvyrG6j9Red_iSUuLDMbXPOUhxKGmDyegLKZgyf1p76zLwuEAniKLSqaUpRFLCR9Mjc7Nb0j_e3ZwilkorM-TbcDKtc4GdRunE7ha9HV6F_GuDdk0YurZSsiUyE9QT0J9afO-34d0p2CvYAVRVQ_)
+![Sequence Diagram](http://www.plantuml.com/plantuml/png/VP71JiCm38RlUOeSuR0Nw66Q14SGXnquLbvhZK2MLh4BsjjZrDIP4U6okVRlpx-T0p5aNYxHmS1JzWynO68FL28tIpaCOGR9lkA9C7zYbdhzC9BdfwCgjjYDm702GlzoUiU1Zp88pYWIcwYwnoq0qjWvLypjzdLuvy_8_PoHmZdXs2yvtjsxQdGduhMjyqPrGxCkHBTm7ouI2icK34rWyvG86xOKqaijyDMwskjQdIU1us_jLhPK7MfOUkZEGu9ufK9h7a8fM-EVHuXHCQfh3bDLOpqPkKGckrbbgQLwJ7Nx1O6RJxyELtpZoBfEupqiTdZ3uMD3oZ-CFsg8x5T0A4ddQzUjuTBfC1AMbZJn_prLW6bq1_bPBl4R)
 
 ## Todo
 ML Models, Datasets, Training Experiments and Results.
