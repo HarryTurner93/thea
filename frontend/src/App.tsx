@@ -6,7 +6,14 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-          <Map/>
+          <Map>
+              <div style={{
+                  backgroundColor: '#00FF00',
+                  height: '50px',
+                  width: '100px',
+                  position: 'absolute'
+              }}></div>
+          </Map>
       </header>
     </div>
   );

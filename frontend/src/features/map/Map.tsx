@@ -14,7 +14,11 @@ import styles from './Map.module.css';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiaHR1cm5lcjMwIiwiYSI6ImNrNjI5ZHloMTBhcjYzb3BlMnVpOG80bmwifQ.eKnvR1lWydBWdG6VX7VEKA';
 
-export function Map() {
+interface Props {
+  children: JSX.Element
+}
+
+export function Map(props: Props) {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null | undefined>(null);
   const [lng, setLng] = useState(-2.559826);
@@ -32,8 +36,8 @@ export function Map() {
   });
 
   return (
-    <div>
-      <div ref={mapContainer} className={styles.container} />
+    <div ref={mapContainer} className={styles.container}>
+      {props.children}
     </div>
   );
 }
