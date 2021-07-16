@@ -1,5 +1,12 @@
+.circleContainer {
+  backdrop-filter: blur(5px);
+  box-shadow: 1px 1px 3px #cccccc;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+}
 .circle {
-  background-color: #95a3b3;
+  background-color: #ffffff;
   border-radius: 50%;
   width: 64px;
   height: 64px;
@@ -16,6 +23,6 @@
 }
 
 h1 {
-  color: #ffffff;
+  color: #95a3b3;
   margin: 0px;
 }

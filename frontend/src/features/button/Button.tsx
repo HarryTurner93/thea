@@ -8,8 +8,10 @@ interface Props {
 
 export function Button({ text }: Props) {
   return (
-    <div className={styles.circle}>
-      <h1>{text}</h1>
+    <div className={styles.circleContainer}>
+      <div className={styles.circle}>
+        <h1>{text}</h1>
+      </div>
     </div>
   );
 }
