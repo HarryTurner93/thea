@@ -37,3 +37,28 @@
     transform: translateY(0px);
   }
 }
+
+.mapOverlay {
+  position: absolute;
+  pointer-events: none;
+  width: 100%
+}
+
+.headerContainer {
+  margin: 20px;
+  display: flex;
+  flexDirection: row;
+  justify-content: space-between;
+}
+
+.iconContainer {
+  background-color: #AAAA00;
+  height: 100px;
+  width: 100px;
+  margin-left: 25px;
+}
+
+.iconBar {
+  display: flex;
+  flex-direction: row;
+}
