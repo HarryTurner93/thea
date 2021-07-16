@@ -41,20 +41,19 @@
 .mapOverlay {
   position: absolute;
   pointer-events: none;
-  width: 100%
+  width: 100%;
 }
 
 .headerContainer {
   margin: 20px;
   display: flex;
-  flexDirection: row;
+  flexdirection: row;
   justify-content: space-between;
 }
 
 .iconContainer {
-  background-color: #AAAA00;
-  height: 100px;
-  width: 100px;
+  height: 64px;
+  width: 64px;
   margin-left: 25px;
 }
 

@@ -3,7 +3,7 @@ import counterReducer, {
   increment,
   decrement,
   incrementByAmount,
-} from "./mapSlice";
+} from "./loginSlice";
 
 describe("counter reducer", () => {
   const initialState: CounterState = {

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../app/store";
-import { fetchCount } from "./popupAPI";
+import { fetchCount } from "./buttonAPI";
 
 export interface CounterState {
   value: number;
@@ -26,7 +26,7 @@ export const incrementAsync = createAsyncThunk(
   }
 );
 
-export const popupSlice = createSlice({
+export const buttonSlice = createSlice({
   name: "counter",
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
@@ -60,7 +60,7 @@ export const popupSlice = createSlice({
   },
 });
 
-export const { increment, decrement, incrementByAmount } = popupSlice.actions;
+export const { increment, decrement, incrementByAmount } = buttonSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -78,4 +78,4 @@ export const incrementIfOdd =
     }
   };
 
-export default popupSlice.reducer;
+export default buttonSlice.reducer;

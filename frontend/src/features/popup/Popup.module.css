@@ -1,11 +1,11 @@
 .containerBackground {
   backdrop-filter: blur(7px);
-  box-shadow: 1px 1px 3px #CCCCCC;
+  box-shadow: 1px 1px 3px #cccccc;
   border-radius: 10px;
   width: 500px;
 }
 .container {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 10px;
   opacity: 0.7;
   width: 500px;
@@ -22,14 +22,14 @@
   padding: 20px;
 }
 .title {
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 24px;
-  margin: 0px
+  margin: 0px;
 }
 .cancel {
   pointer-events: all;
   cursor: pointer;
-  opacity: 1.0;
+  opacity: 1;
   transition: 0.1s;
 }
 .cancel:hover {
@@ -65,13 +65,13 @@ p {
 }
 .iconButton {
   background-color: #95a3b3;
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: 10px;
   margin: 0px 20px 0px 0px;
   padding: 15px;
   pointer-events: all;
   cursor: pointer;
-  opacity: 1.0;
+  opacity: 1;
   transition: 0.1s;
 }
 .iconButton:hover {
@@ -82,5 +82,5 @@ h4 {
   margin: 0px;
 }
 .deleteButton {
-  background-color: #EE5555;
+  background-color: #ee5555;
 }
