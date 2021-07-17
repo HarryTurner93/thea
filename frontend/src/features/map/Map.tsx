@@ -16,7 +16,7 @@ function makeMarker(
   let el = document.createElement("div");
   el.className = "marker";
   el.style.backgroundImage =
-    "url(https://img.icons8.com/fluent/48/000000/camera.png)";
+    "url(https://img.icons8.com/material-two-tone/48/000000/apple-camera.png)";
   el.style.width = "48px";
   el.style.height = "48px";
   el.style.backgroundSize = "100%";
@@ -37,8 +37,9 @@ interface Props {
 }
 
 interface Camera {
-  latitude: number;
+  id: number;
   longitude: number;
+  latitude: number;
 }
 
 export function Map({ children, token }: Props) {
@@ -46,9 +47,7 @@ export function Map({ children, token }: Props) {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null | undefined>(null);
 
-  // Camera and Marker State
-  const [cameras, setCameras] = useState<Camera[]>([]);
-  const [markers, setMarkers] = useState<Marker[]>([]);
+  const [cameras, setCameras] = useState<Camera[]>([])
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -60,25 +59,14 @@ export function Map({ children, token }: Props) {
     });
   });
 
-  // Whenever camera state changes, draw the markers.
+  // When cameras updates, I want to draw them all, but I don't want to keep adding them
+  // so I either have to track the ones already added and delete them, or don't add new ones if
+  // they're already there. How can I track them without an infinite loop?
   useEffect(() => {
-    // First remove all existing markers.
-    for (const marker of markers) {
-      marker.remove();
-    }
+    console.log(cameras)
+  }, [cameras])
 
-    // Recreate them all based on the state.
-    let newMarkers: Marker[] = [];
-    for (const camera of cameras) {
-      const marker = makeMarker(map.current, camera.longitude, camera.latitude);
-      if (marker !== null) {
-        newMarkers.push();
-      }
-    }
-    setMarkers(newMarkers);
-  }, [markers, cameras]);
-
-  // When the token changes, fetch new cameras from the API.
+  // When the token changes, fetch new cameras from the API and display them.
   useEffect(() => {
     const options = {
       headers: new Headers({ Authorization: `Token ${token}` }),
@@ -91,7 +79,7 @@ export function Map({ children, token }: Props) {
           throw new Error("Bad response.");
         }
       })
-      .then((data) => setCameras(data))
+      .then(data => setCameras(data))
       .catch((error) => console.log(error));
   }, [token]);
 
