@@ -1,7 +1,7 @@
-import React, {useCallback, useState} from "react";
-import { ConnectedProps, connect } from 'react-redux';
-import { AppDispatch } from '../../app/store';
-import { Button, Pane, TextInput } from "evergreen-ui"
+import React, { useCallback, useState } from "react";
+import { ConnectedProps, connect } from "react-redux";
+import { AppDispatch } from "../../app/store";
+import { Button, Pane, TextInput } from "evergreen-ui";
 import { setToken } from "./loginSlice";
 
 import styles from "./Login.module.css";
@@ -13,41 +13,42 @@ const connector = connect(null, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
 
 function Login({ setLogin }: Props) {
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleClick = useCallback(() => {
-
     // Reset error message.
-    setErrorMessage("")
+    setErrorMessage("");
 
     // Attempt to login.
     // Todo: Credentials passed via inputs.
     const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: 'harry',
-          password: '4loaseheb4'
-        })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: "harry",
+        password: "4loaseheb4",
+      }),
     };
     // Todo: Move this to environment variable.
-    fetch('http://localhost:8000/api-token-auth/', requestOptions)
+    fetch("http://localhost:8000/api-token-auth/", requestOptions)
       .then((response) => {
         if (response.ok) {
-          return response.json()
+          return response.json();
         } else {
           throw new Error("Invalid credentials.");
         }
       })
-      .then(data => setLogin(data.token))
+      .then((data) => setLogin(data.token))
 
       // Catch errors.
       // Replace 'Failed to fetch' with more meaningful message.
       .catch((error) => {
-        const message = error.message === 'Failed to fetch' ? 'Server unreachable.' : error.message
-        setErrorMessage(message)
-      })
-
+        const message =
+          error.message === "Failed to fetch"
+            ? "Server unreachable."
+            : error.message;
+        setErrorMessage(message);
+      });
   }, [setErrorMessage, setLogin]);
 
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Button, Pane, TextInput, IconButton, TrashIcon } from "evergreen-ui"
+import { Button, TrashIcon } from "evergreen-ui";
 
 import styles from "./Popup.module.css";
 
@@ -36,14 +36,17 @@ export function Popup() {
           <Label label="Images" value="160" />
         </div>
         <div className={styles.footer}>
-          <Button className={styles.button} marginRight={12} iconBefore={TrashIcon} intent="danger">
-            Delete
-          </Button>
           <Button
             className={styles.button}
-            marginRight={16}
-            intent="none"
-          >Image Browser</Button>
+            marginRight={12}
+            iconBefore={TrashIcon}
+            intent="danger"
+          >
+            Delete
+          </Button>
+          <Button className={styles.button} marginRight={16} intent="none">
+            Image Browser
+          </Button>
         </div>
       </div>
     </div>

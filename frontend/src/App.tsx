@@ -1,12 +1,11 @@
 import React from "react";
 
 import { Map } from "./features/map/Map";
-import { Popup } from "./features/popup/Popup";
 import { Button } from "./features/button/Button";
 import Login from "./features/login/Login";
 import styles from "./App.module.css";
-import {useAppSelector} from "./app/hooks";
-import {getToken} from "./features/login/loginSlice";
+import { useAppSelector } from "./app/hooks";
+import { getToken } from "./features/login/loginSlice";
 
 function LoggedInApp() {
   return (
@@ -22,7 +21,7 @@ function LoggedInApp() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function App() {
@@ -31,13 +30,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Map token={token}>
-          {
-            token === ""
-              ? <Login/>
-              : <LoggedInApp/>
-            }
-        </Map>
+        <Map token={token}>{token === "" ? <Login /> : <LoggedInApp />}</Map>
       </header>
     </div>
   );
