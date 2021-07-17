@@ -42,13 +42,13 @@
   margin: 20px;
   display: flex;
   flexdirection: row;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
 .iconContainer {
   height: 64px;
   width: 64px;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .iconBar {

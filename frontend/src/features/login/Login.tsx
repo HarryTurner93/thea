@@ -48,7 +48,7 @@ function Login({ setLogin }: Props) {
         setErrorMessage(message)
       })
 
-  }, []);
+  }, [setErrorMessage, setLogin]);
 
   return (
     <div className={styles.background}>

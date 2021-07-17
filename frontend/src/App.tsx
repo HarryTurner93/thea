@@ -12,7 +12,6 @@ function LoggedInApp() {
   return (
     <div>
       <div className={styles.headerContainer}>
-        <Popup />
         <div className={styles.iconBar}>
           <div className={styles.iconContainer}>
             <Button text="＋" />
@@ -32,7 +31,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Map>
+        <Map token={token}>
           {
             token === ""
               ? <Login/>

@@ -15,7 +15,6 @@ export const loginSlice = createSlice({
   reducers: {
     setToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
-      console.log("It worked!")
     }
   }
 });
