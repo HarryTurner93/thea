@@ -12,7 +12,6 @@
 }
 
 .header {
-  background-color: #4b4e6d;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   display: flex;
@@ -22,7 +21,7 @@
   padding: 20px;
 }
 .title {
-  color: #ffffff;
+  color: #95a3b3;
   font-size: 24px;
   margin: 0px;
 }
@@ -31,6 +30,8 @@
   cursor: pointer;
   opacity: 0.7;
   transition: 0.1s;
+  margin: 0px;
+  color: #95a3b3;
 }
 .cancel:hover {
   opacity: 1.0;
