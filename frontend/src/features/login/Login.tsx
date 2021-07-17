@@ -8,31 +8,33 @@ export function Login() {
   const history = useHistory();
 
   function handleClick() {
-    history.push("/app");
+
   }
 
   return (
-    <div className={styles.page}>
-      <Pane className={styles.container}>
-        <TextInput
-          className={styles.input}
-          name="username-input"
-          placeholder="username"
-        />
-        <TextInput
-          className={styles.input}
-          name="password-input"
-          placeholder="password"
-        />
-        <Button
-          className={styles.button}
-          onClick={handleClick}
-          marginRight={16}
-          intent="none"
-        >
-          Login
-        </Button>
-      </Pane>
+    <div className={styles.background}>
+      <div className={styles.page}>
+        <Pane className={styles.container}>
+          <TextInput
+            className={styles.input}
+            name="username-input"
+            placeholder="username"
+          />
+          <TextInput
+            className={styles.input}
+            name="password-input"
+            placeholder="password"
+          />
+          <Button
+            className={styles.button}
+            onClick={handleClick}
+            marginRight={16}
+            intent="none"
+          >
+            Login
+          </Button>
+        </Pane>
+      </div>
     </div>
   );
 }

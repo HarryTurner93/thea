@@ -11,33 +11,26 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Router>
-          <Switch>
-            <Route path="/app">
-              <Map>
-                <div className={styles.mapOverlay}>
-                  <div className={styles.headerContainer}>
-                    <Popup />
-                    <div className={styles.iconBar}>
-                      <div className={styles.iconContainer}>
-                        <Button text="＋" />
-                      </div>
-                      <div className={styles.iconContainer}>
-                        <Button text="H" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Map>
-            </Route>
-            <Route path="/">
-              <Login />
-            </Route>
-          </Switch>
-        </Router>
+        <Map>
+           <Login />
+        </Map>
       </header>
     </div>
   );
 }
 
 export default App;
+
+/*<div className={styles.mapOverlay}>
+            <div className={styles.headerContainer}>
+              <Popup />
+              <div className={styles.iconBar}>
+                <div className={styles.iconContainer}>
+                  <Button text="＋" />
+                </div>
+                <div className={styles.iconContainer}>
+                  <Button text="H" />
+                </div>
+              </div>
+            </div>
+          </div>*/

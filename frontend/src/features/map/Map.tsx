@@ -26,7 +26,9 @@ export function Map(props: Props) {
 
   return (
     <div ref={mapContainer} className={styles.container}>
-      {props.children}
+      <div className={styles.overlay}>
+        {props.children}
+      </div>
     </div>
   );
 }

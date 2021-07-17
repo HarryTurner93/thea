@@ -3,3 +3,8 @@
   width: 100vw;
   position: relative;
 }
+.overlay {
+  position: absolute;
+  pointer-events: none;
+  width: 100%;
+}

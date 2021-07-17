@@ -19,7 +19,7 @@ from .views import CameraViewSet, ImageViewSet, UserViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('cameras', CameraViewSet)
+router.register('cameras', CameraViewSet, basename='Camera')
 router.register('images', ImageViewSet)
 router.register('users', UserViewSet)
 

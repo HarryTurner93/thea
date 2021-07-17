@@ -6,10 +6,12 @@ from .models import Camera, Image
 from .serializers import CameraSerializer, ImageSerializer, UserSerializer
 
 class CameraViewSet(viewsets.ModelViewSet):
-    queryset = Camera.objects.all()
     serializer_class = CameraSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = None
+
+    def get_queryset(self):
+        return Camera.objects.filter(user=self.request.user)
 
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.all()

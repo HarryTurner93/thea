@@ -1,4 +1,4 @@
-#!/bin/bash
+./star  #!/bin/bash
 
 # If docker-compose is not installed, then install it.
 if ! command -v docker-compose &>/dev/null; then
