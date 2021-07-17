@@ -1,20 +1,60 @@
-import React from "react";
-import { Button, Pane, TextInput } from "evergreen-ui";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useState} from "react";
+import { ConnectedProps, connect } from 'react-redux';
+import { AppDispatch } from '../../app/store';
+import { Button, Pane, TextInput } from "evergreen-ui"
+import { setToken } from "./loginSlice";
 
 import styles from "./Login.module.css";
 
-export function Login() {
-  const history = useHistory();
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  setLogin: (token: string) => dispatch(setToken(token)),
+});
+const connector = connect(null, mapDispatchToProps);
+type Props = ConnectedProps<typeof connector>;
 
-  function handleClick() {
+function Login({ setLogin }: Props) {
+  const [errorMessage, setErrorMessage] = useState("")
 
-  }
+  const handleClick = useCallback(() => {
+
+    // Reset error message.
+    setErrorMessage("")
+
+    // Attempt to login.
+    // Todo: Credentials passed via inputs.
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: 'harry',
+          password: '4loaseheb4'
+        })
+    };
+    // Todo: Move this to environment variable.
+    fetch('http://localhost:8000/api-token-auth/', requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error("Invalid credentials.");
+        }
+      })
+      .then(data => setLogin(data.token))
+
+      // Catch errors.
+      // Replace 'Failed to fetch' with more meaningful message.
+      .catch((error) => {
+        const message = error.message === 'Failed to fetch' ? 'Server unreachable.' : error.message
+        setErrorMessage(message)
+      })
+
+  }, []);
 
   return (
     <div className={styles.background}>
       <div className={styles.page}>
         <Pane className={styles.container}>
+          <p>{errorMessage}</p>
           <TextInput
             className={styles.input}
             name="username-input"
@@ -38,3 +78,5 @@ export function Login() {
     </div>
   );
 }
+
+export default connector(Login);

@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-pcgbtd*91(l^)(8&aox1=uud57&r!-#@hy#17f0%v5m55e4-lj
 DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
+CORS_ORIGIN_ALLOW_ALL=True
 
 
 # Application definition
@@ -39,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework.authtoken',
     'rest_framework',
-    'web'
+    'web',
+    'corsheaders'
 ]
 
 REST_FRAMEWORK = {
@@ -51,6 +53,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

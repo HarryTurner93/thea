@@ -22,4 +22,9 @@ fi
 # Make the directory for the database.
 [ ! -d "./db" ] && mkdir db
 
-docker-compose up
+# Build or run
+if [ "$1" == "build" ]; then
+  docker-compose build
+else
+  docker-compose up
+fi
