@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Button, Pane, TextInput, IconButton, TrashIcon } from "evergreen-ui"
+
 import styles from "./Popup.module.css";
 
 interface labelProps {
@@ -34,12 +36,14 @@ export function Popup() {
           <Label label="Images" value="160" />
         </div>
         <div className={styles.footer}>
-          <div className={`${styles.iconButton} ${styles.deleteButton}`}>
-            <h4>Delete</h4>
-          </div>
-          <div className={styles.iconButton}>
-            <h4>Image Browser</h4>
-          </div>
+          <Button className={styles.button} marginRight={12} iconBefore={TrashIcon} intent="danger">
+            Delete
+          </Button>
+          <Button
+            className={styles.button}
+            marginRight={16}
+            intent="none"
+          >Image Browser</Button>
         </div>
       </div>
     </div>
