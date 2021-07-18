@@ -16,7 +16,7 @@ function LoggedInApp() {
             <Button text="＋" />
           </div>
           <div className={styles.iconContainer}>
-            <Button text="H" />
+            <Button text="➜" />
           </div>
         </div>
       </div>

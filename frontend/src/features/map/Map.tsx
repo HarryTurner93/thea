@@ -59,13 +59,6 @@ export function Map({ children, token }: Props) {
     });
   });
 
-  // When cameras updates, I want to draw them all, but I don't want to keep adding them
-  // so I either have to track the ones already added and delete them, or don't add new ones if
-  // they're already there. How can I track them without an infinite loop?
-  useEffect(() => {
-    console.log(cameras)
-  }, [cameras])
-
   // When the token changes, fetch new cameras from the API and display them.
   useEffect(() => {
     const options = {
@@ -79,7 +72,21 @@ export function Map({ children, token }: Props) {
           throw new Error("Bad response.");
         }
       })
-      .then(data => setCameras(data))
+
+      // Update array of cameras with any new ones.
+      .then(data => setCameras((existingCameras) => {
+        const existingIDs = existingCameras.map(camera => camera.id)
+        const newCameras = data.filter((camera: Camera) => !existingIDs.includes(camera.id))
+        const markedCameras = newCameras.map((camera: Camera) => {
+          return {
+            ...camera,
+            marker: makeMarker(map.current, camera.longitude, camera.latitude)
+          }
+        })
+        return [ ...existingCameras, ...markedCameras]
+      }))
+
+        // Catch errors.
       .catch((error) => console.log(error));
   }, [token]);
 
