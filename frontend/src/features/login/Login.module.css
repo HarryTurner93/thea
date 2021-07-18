@@ -27,3 +27,11 @@
 .button {
   margin: 10px;
 }
+.title {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+.errorMessage {
+  font-size: 14px;
+  color: #ff5555;
+}

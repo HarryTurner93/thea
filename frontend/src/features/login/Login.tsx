@@ -14,6 +14,8 @@ type Props = ConnectedProps<typeof connector>;
 
 function Login({ setLogin }: Props) {
   const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   const handleClick = useCallback(() => {
     // Reset error message.
@@ -25,8 +27,8 @@ function Login({ setLogin }: Props) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username: "harry",
-        password: "4loaseheb4",
+        username: username,
+        password: password,
       }),
     };
     // Todo: Move this to environment variable.
@@ -49,23 +51,32 @@ function Login({ setLogin }: Props) {
             : error.message;
         setErrorMessage(message);
       });
-  }, [setErrorMessage, setLogin]);
+  }, [setErrorMessage, setLogin, username, password]);
 
   return (
     <div className={styles.background}>
       <div className={styles.page}>
         <Pane className={styles.container}>
-          <p>{errorMessage}</p>
+          <h1 className={styles.title}>Nature View</h1>
           <TextInput
             className={styles.input}
             name="username-input"
             placeholder="username"
+            value={username}
+            onChange={(e: React.FormEvent<HTMLInputElement>) =>
+              setUsername(e.currentTarget.value)
+            }
           />
           <TextInput
             className={styles.input}
             name="password-input"
             placeholder="password"
+            value={password}
+            onChange={(e: React.FormEvent<HTMLInputElement>) =>
+              setPassword(e.currentTarget.value)
+            }
           />
+          <h1 className={styles.errorMessage}>{errorMessage}</h1>
           <Button
             className={styles.button}
             onClick={handleClick}
