@@ -1,8 +1,9 @@
-import mapboxgl, { Marker } from "mapbox-gl";
+import mapboxgl from "mapbox-gl";
 import React, { useRef, useEffect, useState } from "react";
 
 import styles from "./Map.module.css";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { popUpInfo } from "../popup/popupSlice";
 
 // Todo: Move this to environmen variable.
 mapboxgl.accessToken =
@@ -11,15 +12,20 @@ mapboxgl.accessToken =
 function makeMarker(
   map: mapboxgl.Map | null | undefined,
   longitude: number,
-  latitude: number
+  latitude: number,
+  callback: (popUpInfo: popUpInfo) => void
 ) {
   let el = document.createElement("div");
-  el.className = "marker";
+  el.className = styles.marker;
   el.style.backgroundImage =
     "url(https://img.icons8.com/material-two-tone/48/000000/apple-camera.png)";
-  el.style.width = "48px";
-  el.style.height = "48px";
-  el.style.backgroundSize = "100%";
+  el.onclick = () => {
+    callback({
+      latitude: latitude,
+      longitude: longitude,
+      numImages: 0,
+    });
+  };
 
   if (map != null) {
     let marker = new mapboxgl.Marker(el, { offset: [0, -50 / 2] })
@@ -33,6 +39,7 @@ function makeMarker(
 
 interface Props {
   children: JSX.Element;
+  onCameraClick: (popUpInfo: popUpInfo) => void;
   token: string;
 }
 
@@ -40,9 +47,10 @@ interface Camera {
   id: number;
   longitude: number;
   latitude: number;
+  marker: mapboxgl.Marker;
 }
 
-export function Map({ children, token }: Props) {
+export function Map({ children, onCameraClick, token }: Props) {
   // Map State
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null | undefined>(null);
@@ -59,8 +67,25 @@ export function Map({ children, token }: Props) {
     });
   });
 
+  // If token is "" then user is logged out so remove all markers that exist.
+  useEffect(() => {
+    if (token === "") {
+      setCameras((cameras) => {
+        for (const camera of cameras) {
+          camera.marker.remove();
+        }
+        return [];
+      });
+    }
+  }, [setCameras, token]);
+
   // When the token changes, fetch new cameras from the API and display them.
   useEffect(() => {
+    // If token is "" just skip, don't hit the API.
+    if (token === "") {
+      return;
+    }
+
     const options = {
       headers: new Headers({ Authorization: `Token ${token}` }),
     };
@@ -86,7 +111,8 @@ export function Map({ children, token }: Props) {
               marker: makeMarker(
                 map.current,
                 camera.longitude,
-                camera.latitude
+                camera.latitude,
+                onCameraClick
               ),
             };
           });
@@ -96,7 +122,7 @@ export function Map({ children, token }: Props) {
 
       // Catch errors.
       .catch((error) => console.log(error));
-  }, [token]);
+  }, [onCameraClick, token]);
 
   return (
     <div ref={mapContainer} className={styles.container}>

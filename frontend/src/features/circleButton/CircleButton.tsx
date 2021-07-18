@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Pane, Dialog, Button } from "evergreen-ui";
+import { Dialog } from "evergreen-ui";
 
 import styles from "./Circle.module.css";
 
@@ -25,10 +25,9 @@ export function CircleButton({ text, doPopUp = false, callback }: Props) {
       <Dialog
         isShown={isShown}
         title="Log out?"
-        onCloseComplete={() => {
-          setIsShown(false);
-          callback();
-        }}
+        intent="danger"
+        onCloseComplete={() => setIsShown(false)}
+        onConfirm={() => callback()}
         confirmLabel="Log Out"
       >
         Confirm that you want to log out.
