@@ -47,7 +47,7 @@ export function Map({ children, token }: Props) {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<mapboxgl.Map | null | undefined>(null);
 
-  const [cameras, setCameras] = useState<Camera[]>([])
+  const [cameras, setCameras] = useState<Camera[]>([]);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -74,19 +74,27 @@ export function Map({ children, token }: Props) {
       })
 
       // Update array of cameras with any new ones.
-      .then(data => setCameras((existingCameras) => {
-        const existingIDs = existingCameras.map(camera => camera.id)
-        const newCameras = data.filter((camera: Camera) => !existingIDs.includes(camera.id))
-        const markedCameras = newCameras.map((camera: Camera) => {
-          return {
-            ...camera,
-            marker: makeMarker(map.current, camera.longitude, camera.latitude)
-          }
+      .then((data) =>
+        setCameras((existingCameras) => {
+          const existingIDs = existingCameras.map((camera) => camera.id);
+          const newCameras = data.filter(
+            (camera: Camera) => !existingIDs.includes(camera.id)
+          );
+          const markedCameras = newCameras.map((camera: Camera) => {
+            return {
+              ...camera,
+              marker: makeMarker(
+                map.current,
+                camera.longitude,
+                camera.latitude
+              ),
+            };
+          });
+          return [...existingCameras, ...markedCameras];
         })
-        return [ ...existingCameras, ...markedCameras]
-      }))
+      )
 
-        // Catch errors.
+      // Catch errors.
       .catch((error) => console.log(error));
   }, [token]);
 

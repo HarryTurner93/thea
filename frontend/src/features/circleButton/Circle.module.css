@@ -22,8 +22,8 @@
   transition: 0.1s;
 }
 .circle:active {
-  background-color: #CCCCCC;
-  transition: 0.0s;
+  background-color: #cccccc;
+  transition: 0s;
 }
 
 h1 {

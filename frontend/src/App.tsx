@@ -1,22 +1,30 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import { Map } from "./features/map/Map";
-import { Button } from "./features/button/Button";
+import { CircleButton } from "./features/circleButton/CircleButton";
 import Login from "./features/login/Login";
 import styles from "./App.module.css";
 import { useAppSelector } from "./app/hooks";
 import { getToken } from "./features/login/loginSlice";
 
 function LoggedInApp() {
+  const logOutCallback = useCallback(() => {
+    console.log("Log out.");
+  }, []);
+
+  const addCameraCallback = useCallback(() => {
+    console.log("Add camera.");
+  }, []);
+
   return (
     <div>
       <div className={styles.headerContainer}>
         <div className={styles.iconBar}>
           <div className={styles.iconContainer}>
-            <Button text="＋" />
+            <CircleButton text="＋" callback={addCameraCallback} />
           </div>
           <div className={styles.iconContainer}>
-            <Button text="➜" />
+            <CircleButton text="➜" doPopUp={true} callback={logOutCallback} />
           </div>
         </div>
       </div>

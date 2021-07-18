@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../app/store";
-import { fetchCount } from "./buttonAPI";
+import { fetchCount } from "./circleAPI";
 
 export interface CounterState {
   value: number;
@@ -26,7 +26,7 @@ export const incrementAsync = createAsyncThunk(
   }
 );
 
-export const buttonSlice = createSlice({
+export const circleSlice = createSlice({
   name: "counter",
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
@@ -60,7 +60,7 @@ export const buttonSlice = createSlice({
   },
 });
 
-export const { increment, decrement, incrementByAmount } = buttonSlice.actions;
+export const { increment, decrement, incrementByAmount } = circleSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -78,4 +78,4 @@ export const incrementIfOdd =
     }
   };
 
-export default buttonSlice.reducer;
+export default circleSlice.reducer;
