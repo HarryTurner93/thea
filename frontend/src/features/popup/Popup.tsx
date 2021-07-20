@@ -43,7 +43,7 @@ function Popup({ popUpState, popUpInfo, closePopUp }: Props) {
         <div className={styles.containerBackground}>
           <div className={styles.container}>
             <div className={styles.header}>
-              <h3 className={styles.title}>Wapley Camera Trap</h3>
+              <h3 className={styles.title}>{popUpInfo.name}</h3>
               <h3 onClick={() => closePopUp()} className={styles.cancel}>
                 ✕
               </h3>

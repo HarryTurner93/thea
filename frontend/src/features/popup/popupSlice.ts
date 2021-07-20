@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
 export type popUpInfo = {
+  name: string;
   latitude: number;
   longitude: number;
   numImages: number;
@@ -15,6 +16,7 @@ export interface PopUpState {
 const initialState: PopUpState = {
   open: false,
   popUpInfo: {
+    name: "",
     latitude: 0,
     longitude: 0,
     numImages: 0,

@@ -12,6 +12,7 @@ mapboxgl.accessToken =
 
 function makeMarker(
   map: mapboxgl.Map,
+  name: string,
   longitude: number,
   latitude: number,
   callback: (popUpInfo: popUpInfo) => void
@@ -22,6 +23,7 @@ function makeMarker(
     "url(https://img.icons8.com/material-two-tone/48/000000/apple-camera.png)";
   el.onclick = () => {
     callback({
+      name: name,
       latitude: latitude,
       longitude: longitude,
       numImages: 0,
@@ -42,6 +44,7 @@ interface Props {
 
 interface Camera {
   id: number;
+  name: string;
   longitude: number;
   latitude: number;
   marker: mapboxgl.Marker;
@@ -53,6 +56,7 @@ interface Camera {
 enum MapStates {
   Viewing,
   AddingCamera,
+  NamingCamera,
 }
 
 // This function is called at the point at which a new camera is added to the Map state.
@@ -132,6 +136,7 @@ export const Map = React.forwardRef(
       });
     });
 
+    // Register AddCamera
     // This registers the addCamera as an externally callable function so other
     // components can "trigger" it by using the Map as a reference. This is how I get
     // other components to trigger changes in MapState. Another way to do it would be to
@@ -149,7 +154,7 @@ export const Map = React.forwardRef(
       []
     );
 
-    // Add Camera
+    // Click
     // This effect is triggered every time the user clicks, but it checks the mapState and
     // does nothing if the mapState is in Viewing. If it's not though, then is adds a new camera
     // to the cameras state and then updates the backend.
@@ -161,10 +166,12 @@ export const Map = React.forwardRef(
             if (map.current) {
               const newCamera: Camera = {
                 id: 10,
+                name: "Default",
                 latitude: clickCoordinates.latitude,
                 longitude: clickCoordinates.longitude,
                 marker: makeMarker(
                   map.current,
+                  "Default",
                   clickCoordinates.longitude,
                   clickCoordinates.latitude,
                   onCameraClick
@@ -195,6 +202,7 @@ export const Map = React.forwardRef(
       }
     }, [mapState]);
 
+    // Wipe Cameras on Logout
     // This effect is triggered by a change in login, specifically it watches
     // for the case where the login token becomes "" which means the user has logged out.
     // The effect is to remove all cameras from the map.
@@ -209,6 +217,7 @@ export const Map = React.forwardRef(
       }
     }, [setCameras, login]);
 
+    // Fetch Cameras on Login
     // This effect is triggered by a change in login, specifically it watches for
     // a change in token which is NOT "", in which case it exits early. If the token
     // is not "" then it means a user has logged in, this effect then requests all cameras
@@ -246,6 +255,7 @@ export const Map = React.forwardRef(
                     ...camera,
                     marker: makeMarker(
                       map.current,
+                      camera.name,
                       camera.longitude,
                       camera.latitude,
                       onCameraClick
