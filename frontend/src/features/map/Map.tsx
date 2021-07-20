@@ -1,5 +1,12 @@
 import mapboxgl from "mapbox-gl";
-import React, { useRef, useEffect, useState, useImperativeHandle } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useImperativeHandle,
+  useCallback,
+} from "react";
+import { Pane, Dialog, TextInputField } from "evergreen-ui";
 
 import styles from "./Map.module.css";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -59,6 +66,42 @@ enum MapStates {
   NamingCamera,
 }
 
+interface DialogProps {
+  isShown: boolean;
+  closeCallback(): void;
+  confirmCallback(name: string): void;
+}
+
+function EnterCameraName({
+  isShown,
+  closeCallback,
+  confirmCallback,
+}: DialogProps) {
+  const [name, setName] = useState("");
+  return (
+    <Pane>
+      <Dialog
+        isShown={isShown}
+        title="Give it a name."
+        confirmLabel="Confirm Name"
+        onCloseComplete={() => closeCallback()}
+        onConfirm={() => {
+          confirmCallback(name);
+        }}
+      >
+        <TextInputField
+          label="Camera Name"
+          required
+          value={name}
+          onChange={(e: React.FormEvent<HTMLInputElement>) =>
+            setName(e.currentTarget.value)
+          }
+        />
+      </Dialog>
+    </Pane>
+  );
+}
+
 // This function is called at the point at which a new camera is added to the Map state.
 // It intercepts (well passes through really), and updates the API with the new camera.
 // This isn't great because it introduces a short delay, optimistic rendering would be
@@ -77,6 +120,7 @@ const addCameraMiddleware = (
       Authorization: `Token ${login.token}`,
     },
     body: JSON.stringify({
+      name: newCamera.name,
       latitude: newCamera.latitude,
       longitude: newCamera.longitude,
       user: login.id,
@@ -92,7 +136,9 @@ const addCameraMiddleware = (
       }
     })
     .then((data) => {
-      updatedCameras.push(newCamera);
+      let fixedCamera = { ...newCamera }
+      fixedCamera.id = data.id;
+      updatedCameras.push(fixedCamera);
     })
     .catch((error) => console.log(error));
 
@@ -154,37 +200,19 @@ export const Map = React.forwardRef(
       []
     );
 
-    // Click
+    // Click Map
     // This effect is triggered every time the user clicks, but it checks the mapState and
-    // does nothing if the mapState is in Viewing. If it's not though, then is adds a new camera
-    // to the cameras state and then updates the backend.
+    // does nothing if the mapState is in Viewing. If it's in the correct state though
+    // (AddingCamera) then it moves the state to NamingCamera, at this point, the clickCoordinates
+    // are saved in the state.
     useEffect(() => {
       setMapState((prevState) => {
         // Only take action if the map is in the right state.
         if (prevState === MapStates.AddingCamera) {
-          setCameras((prevCameras) => {
-            if (map.current) {
-              const newCamera: Camera = {
-                id: 10,
-                name: "Default",
-                latitude: clickCoordinates.latitude,
-                longitude: clickCoordinates.longitude,
-                marker: makeMarker(
-                  map.current,
-                  "Default",
-                  clickCoordinates.longitude,
-                  clickCoordinates.latitude,
-                  onCameraClick
-                ),
-              };
-              return addCameraMiddleware([...prevCameras], newCamera, login);
-            }
-            return [...prevCameras];
-          });
+          return MapStates.NamingCamera;
         }
 
-        // If map was in the viewing state, then just return with no change.
-        // Returning null means a rerender is not triggered.
+        // If map was not in the AddingCamera state, then abort with no change.
         return null;
       });
     }, [login, onCameraClick, clickCoordinates]);
@@ -275,6 +303,45 @@ export const Map = React.forwardRef(
         .catch((error) => console.log(error));
     }, [onCameraClick, login]);
 
+    // Close Naming Dialog
+    // This callback is passed to the dialog that opens when the Map is in NamingCamera state.
+    // If the dialog is closed, this moves the state back to Viewing so that the dialog goes
+    // away.
+    const handleDialogCancel = useCallback(() => {
+      setMapState(MapStates.Viewing);
+    }, []);
+
+    // Confirm Name Dialog
+    // This callback is passed to the dialog that opens when the Map is in NamingCamera state.
+    // If the dialog is confirmed with a name then this function finally adds a new camera to
+    // the state, and then moves back to Viewing so that the dialog goes away.
+    const handleDialogConfirm = useCallback(
+      (name: string) => {
+        setCameras((prevCameras) => {
+          if (map.current) {
+            const newCamera: Camera = {
+              id: 10,
+              name: name,
+              latitude: clickCoordinates.latitude,
+              longitude: clickCoordinates.longitude,
+              marker: makeMarker(
+                map.current,
+                name,
+                clickCoordinates.longitude,
+                clickCoordinates.latitude,
+                onCameraClick
+              ),
+            };
+            return addCameraMiddleware([...prevCameras], newCamera, login);
+          }
+          return [...prevCameras];
+        });
+        setMapState(MapStates.Viewing);
+      },
+      [clickCoordinates, login, onCameraClick]
+    );
+
+    // Render
     // This is the render function. It renders the map in the div referenced, then it
     // renders an overlay over the top which allows the children to be drawn on top of the map.
     // If the map is in AddingCamera state then it greys out the screen a bit and adds a
@@ -290,6 +357,11 @@ export const Map = React.forwardRef(
           }
         >
           {children}
+          <EnterCameraName
+            isShown={mapState === MapStates.NamingCamera}
+            closeCallback={handleDialogCancel}
+            confirmCallback={handleDialogConfirm}
+          />
           {mapState === MapStates.AddingCamera ? (
             <h1 className={styles.addSensorLabel}>
               Click on the map to add a sensor
