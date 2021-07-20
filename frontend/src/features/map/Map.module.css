@@ -4,13 +4,18 @@
 }
 .overlay {
   width: 100%;
+  height: 100vh;
   position: absolute;
+  pointer-events: none;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
 }
 .marker {
   width: 48px;
   height: 48px;
   background-size: 100%;
+  margin-top: 24px;
   cursor: pointer;
   opacity: 0.2;
   transition: 0.3;
@@ -19,4 +24,8 @@
   width: 52px;
   height: 52px;
   transition: 0.3;
+}
+.addSensorLabel {
+  margin: auto;
+  font-size: 36px;
 }

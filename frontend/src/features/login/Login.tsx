@@ -2,12 +2,12 @@ import React, { useCallback, useState } from "react";
 import { ConnectedProps, connect } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import { Button, Pane, TextInput } from "evergreen-ui";
-import { setToken } from "./loginSlice";
+import { LoginState, setLogin } from "./loginSlice";
 
 import styles from "./Login.module.css";
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  setLogin: (token: string) => dispatch(setToken(token)),
+  setLogin: (token: LoginState) => dispatch(setLogin(token)),
 });
 const connector = connect(null, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
@@ -22,7 +22,6 @@ function Login({ setLogin }: Props) {
     setErrorMessage("");
 
     // Attempt to login.
-    // Todo: Credentials passed via inputs.
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -32,7 +31,7 @@ function Login({ setLogin }: Props) {
       }),
     };
     // Todo: Move this to environment variable.
-    fetch("http://localhost:8000/api-token-auth/", requestOptions)
+    fetch("http://localhost:8000/web/api-token-auth/", requestOptions)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -40,7 +39,7 @@ function Login({ setLogin }: Props) {
           throw new Error("Invalid credentials.");
         }
       })
-      .then((data) => setLogin(data.token))
+      .then((data) => setLogin({ token: data.token, id: data.id }))
 
       // Catch errors.
       // Replace 'Failed to fetch' with more meaningful message.

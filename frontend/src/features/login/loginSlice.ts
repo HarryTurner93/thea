@@ -3,23 +3,28 @@ import { RootState } from "../../app/store";
 
 export interface LoginState {
   token: string;
+  id: number;
 }
 
 const initialState: LoginState = {
   token: "",
+  id: 0,
 };
 
 export const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
-    setToken: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
+    setLogin: (state, action: PayloadAction<LoginState>) => {
+      state.token = action.payload.token;
+      state.id = action.payload.id;
     },
   },
 });
 
-export const { setToken } = loginSlice.actions;
-export const getToken = (state: RootState) => state.login.token;
+export const { setLogin } = loginSlice.actions;
+export const getLogin = (state: RootState) => {
+  return { token: state.login.token, id: state.login.id };
+};
 
 export default loginSlice.reducer;
