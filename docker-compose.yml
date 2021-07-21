@@ -2,6 +2,23 @@ version: "3.9"
 
 services:
 
+  # Localstack
+  localstack:
+    container_name: local_stack
+    image: localstack/localstack:latest
+    network_mode: bridge
+    ports:
+      - 4566:4566
+    environment:
+      - AWS_DEFAULT_REGION=eu-west-2
+      - EDGE_PORT=4566
+      - SERVICES=s3
+      - AWS_ACCESS_KEY_ID='123'
+      - AWS_SECRET_KEY='xyz
+    volumes:
+      - "${PWD}/s3:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
   # Postgres
   db:
     image: postgres:latest

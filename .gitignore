@@ -8,6 +8,10 @@ api/src/api/__pycache__/
 # C extensions
 *.so
 
+# Infra
+db/
+s3/
+
 # React
 .idea/
 .vscode/
