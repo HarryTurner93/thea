@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { getLogin, setLogin } from "./features/login/loginSlice";
 import { openPopUp, closePopUp, popUpInfo } from "./features/popup/popupSlice";
 import Popup from "./features/popup/Popup";
+import Browser from "./features/browser/Browser";
+import { browserInfo, openBrowser } from "./features/browser/browserSlice";
 
 function App() {
   const login = useAppSelector(getLogin);
@@ -17,13 +19,13 @@ function App() {
 
   // This callback is triggered by the AddCamera CircleButton component and
   // calls the addCamera function inside of Map. It links the two together.
-  const addCameraCallback = useCallback(() => {
+  const onAddCamera = useCallback(() => {
     mapRef.current.addCamera();
   }, []);
 
   // This callback is triggered by the Delete Camera button on PopUp and
   // calls the deleteCamera function inside of Map. It links the two together.
-  const deleteCameraCallback = useCallback((id: number) => {
+  const onDeleteCamera = useCallback((id: number) => {
     mapRef.current.deleteCamera(id);
   }, []);
 
@@ -31,9 +33,16 @@ function App() {
   // which adds onClick handlers to each of the cameras that it displays. This function
   // dispatches an openPopUp action which is handled by the PopUp. These actions contain the
   // info from the clicked on camera for displaying in the PopUp.
-  const handleCameraClick = useCallback(
+  const onCameraClick = useCallback(
     (popUpInfo: popUpInfo) => {
       dispatch(openPopUp(popUpInfo));
+    },
+    [dispatch]
+  );
+
+  const onOpenBrowser = useCallback(
+    (browserInfo: browserInfo) => {
+      dispatch(openBrowser(browserInfo));
     },
     [dispatch]
   );
@@ -49,15 +58,21 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Map onCameraClick={handleCameraClick} login={login} ref={mapRef}>
+        <Map onCameraClick={onCameraClick} login={login} ref={mapRef}>
           {login.token === "" ? (
             <Login />
           ) : (
             <div className={styles.headerContainer}>
-              <Popup handleDeleteCamera={deleteCameraCallback} />
+              <div className={styles.headerContainerFloatLeft}>
+                <Browser />
+                <Popup
+                  onDeleteCamera={onDeleteCamera}
+                  onOpenBrowser={onOpenBrowser}
+                />
+              </div>
               <div className={styles.iconBar}>
                 <div className={styles.iconContainer}>
-                  <CircleButton text="＋" callback={addCameraCallback} />
+                  <CircleButton text="＋" callback={onAddCamera} />
                 </div>
                 <div className={styles.iconContainer}>
                   <CircleButton

@@ -236,9 +236,9 @@ export const Map = React.forwardRef(
     // results in them all being displayed on the map.
     useEffect(() => {
       // If token is "" just skip, don't hit the API.
-      if ((login.token === "") || (cameras.length > 0)) {
-        console.log("Skipping fetch, already have cameras.")
-          return;
+      if (login.token === "" || cameras.length > 0) {
+        console.log("Skipping fetch, already have cameras.");
+        return;
       }
 
       const options = {

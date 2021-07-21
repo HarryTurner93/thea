@@ -44,6 +44,10 @@
   flexdirection: row;
   justify-content: space-between;
 }
+.headerContainerFloatLeft {
+  display: flex;
+  flex-direction: row;
+}
 
 .iconContainer {
   height: 64px;

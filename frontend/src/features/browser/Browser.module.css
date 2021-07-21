@@ -1,0 +1,90 @@
+.containerBackground {
+  backdrop-filter: blur(5px);
+  box-shadow: 1px 1px 3px #cccccc;
+  border-radius: 10px;
+}
+.container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  opacity: 0.8;
+}
+
+.header {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+}
+.title {
+  color: #95a3b3;
+  font-size: 18px;
+  margin: 0px;
+}
+.cancel {
+  pointer-events: all;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: 0.1s;
+  margin: 0px;
+  color: #95a3b3;
+}
+.cancel:hover {
+  opacity: 1;
+  transition: 0.1s;
+}
+
+.body {
+  padding: 0px 20px 0px;
+}
+.labelContainer {
+  display: flex;
+  flex-direction: row;
+  padding: 0px 0px 10px 0px;
+  font-size: 14px;
+}
+.labelKey {
+  color: #95a3b3;
+  margin-right: 10px;
+}
+.labelValue {
+  color: #222222;
+}
+p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.footer {
+  padding: 0px 10px 10px 10px;
+  display: flex;
+  flex-direction: row;
+  pointer-events: all;
+  cursor: pointer;
+}
+.button {
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.filterBar {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  padding-left: 20px;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.canvas {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.rowContainer {
+  display: flex;
+  flex-direction: row;
+}
+.imageContainer {
+  padding: 10px;
+}

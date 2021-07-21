@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { Button, TrashIcon } from "evergreen-ui";
+import { Button, TrashIcon, CloudUploadIcon, MediaIcon } from "evergreen-ui";
 
 import styles from "./Popup.module.css";
 import { connect, ConnectedProps } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
 import { closePopUp } from "../popup/popupSlice";
 import { getPopUpInfo, getPopUpStatus } from "./popupSlice";
+import { browserInfo, closeBrowser } from "../browser/browserSlice";
+import { useAppDispatch } from "../../app/hooks";
 
 interface labelProps {
   label: string;
@@ -14,7 +16,8 @@ interface labelProps {
 }
 
 interface WrapperProps {
-  handleDeleteCamera(id: number): void;
+  onDeleteCamera(id: number): void;
+  onOpenBrowser(browserInfo: browserInfo): void;
 }
 
 function Label(props: labelProps) {
@@ -45,8 +48,21 @@ function Popup({
   popUpState,
   popUpInfo,
   closePopUp,
-  handleDeleteCamera,
+  onDeleteCamera,
+  onOpenBrowser,
 }: Props) {
+  const dispatch = useAppDispatch();
+
+  // On Open, Close Browser
+  // This effect listens for changes in popUpState, and triggers when it's open, therefore
+  // it triggers when the PopUp opens. It dispatches an action to close the browser so that
+  // they are not both on the screen at the same time.
+  useEffect(() => {
+    if (popUpState) {
+      dispatch(closeBrowser());
+    }
+  }, [popUpState, dispatch]);
+
   return (
     <div>
       {popUpState ? (
@@ -71,13 +87,33 @@ function Popup({
                 intent="danger"
                 onClick={() => {
                   closePopUp();
-                  handleDeleteCamera(popUpInfo.id);
+                  onDeleteCamera(popUpInfo.id);
                 }}
               >
                 Delete
               </Button>
-              <Button className={styles.button} marginRight={16} intent="none">
-                Image Browser
+              <Button
+                className={styles.button}
+                marginRight={12}
+                iconBefore={CloudUploadIcon}
+                intent="none"
+              >
+                Upload Images
+              </Button>
+              <Button
+                className={styles.button}
+                marginRight={16}
+                intent="none"
+                iconBefore={MediaIcon}
+                onClick={() => {
+                  closePopUp();
+                  onOpenBrowser({
+                    id: popUpInfo.id,
+                    name: popUpInfo.name,
+                  });
+                }}
+              >
+                Browser
               </Button>
             </div>
           </div>
