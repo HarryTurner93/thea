@@ -13,6 +13,10 @@ interface labelProps {
   value: string;
 }
 
+interface WrapperProps {
+  handleDeleteCamera(id: number): void;
+}
+
 function Label(props: labelProps) {
   return (
     <div className={styles.labelContainer}>
@@ -26,9 +30,10 @@ function Label(props: labelProps) {
   );
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState, wrapperProps: WrapperProps) => ({
   popUpState: getPopUpStatus(state),
   popUpInfo: getPopUpInfo(state),
+  ...wrapperProps,
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
   closePopUp: () => dispatch(closePopUp()),
@@ -36,7 +41,12 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
 
-function Popup({ popUpState, popUpInfo, closePopUp }: Props) {
+function Popup({
+  popUpState,
+  popUpInfo,
+  closePopUp,
+  handleDeleteCamera,
+}: Props) {
   return (
     <div>
       {popUpState ? (
@@ -59,6 +69,10 @@ function Popup({ popUpState, popUpInfo, closePopUp }: Props) {
                 marginRight={12}
                 iconBefore={TrashIcon}
                 intent="danger"
+                onClick={() => {
+                  closePopUp();
+                  handleDeleteCamera(popUpInfo.id);
+                }}
               >
                 Delete
               </Button>

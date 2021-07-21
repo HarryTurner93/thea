@@ -21,6 +21,12 @@ function App() {
     mapRef.current.addCamera();
   }, []);
 
+  // This callback is triggered by the Delete Camera button on PopUp and
+  // calls the deleteCamera function inside of Map. It links the two together.
+  const deleteCameraCallback = useCallback((id: number) => {
+    mapRef.current.deleteCamera(id);
+  }, []);
+
   // This callback is trigered by clicking on a camera icon and is called by the Map
   // which adds onClick handlers to each of the cameras that it displays. This function
   // dispatches an openPopUp action which is handled by the PopUp. These actions contain the
@@ -48,7 +54,7 @@ function App() {
             <Login />
           ) : (
             <div className={styles.headerContainer}>
-              <Popup />
+              <Popup handleDeleteCamera={deleteCameraCallback} />
               <div className={styles.iconBar}>
                 <div className={styles.iconContainer}>
                   <CircleButton text="＋" callback={addCameraCallback} />

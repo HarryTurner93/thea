@@ -19,6 +19,7 @@ mapboxgl.accessToken =
 
 function makeMarker(
   map: mapboxgl.Map,
+  id: number,
   name: string,
   longitude: number,
   latitude: number,
@@ -30,6 +31,7 @@ function makeMarker(
     "url(https://img.icons8.com/material-two-tone/48/000000/apple-camera.png)";
   el.onclick = () => {
     callback({
+      id: id,
       name: name,
       latitude: latitude,
       longitude: longitude,
@@ -102,49 +104,6 @@ function EnterCameraName({
   );
 }
 
-// This function is called at the point at which a new camera is added to the Map state.
-// It intercepts (well passes through really), and updates the API with the new camera.
-// This isn't great because it introduces a short delay, optimistic rendering would be
-// better, but at least if the call fails, the camera doesn't get added to the array.
-const addCameraMiddleware = (
-  cameras: Camera[],
-  newCamera: Camera,
-  login: LoginState
-): Camera[] => {
-  let updatedCameras = [...cameras];
-
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Token ${login.token}`,
-    },
-    body: JSON.stringify({
-      name: newCamera.name,
-      latitude: newCamera.latitude,
-      longitude: newCamera.longitude,
-      user: login.id,
-    }),
-  };
-  // Todo: Move this to environment variable.
-  fetch("http://localhost:8000/web/cameras/", requestOptions)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("Couldn't post camera.");
-      }
-    })
-    .then((data) => {
-      let fixedCamera = { ...newCamera }
-      fixedCamera.id = data.id;
-      updatedCameras.push(fixedCamera);
-    })
-    .catch((error) => console.log(error));
-
-  return updatedCameras;
-};
-
 export const Map = React.forwardRef(
   ({ children, onCameraClick, login }: Props, ref) => {
     // Map State
@@ -196,8 +155,32 @@ export const Map = React.forwardRef(
         addCamera() {
           setMapState(MapStates.AddingCamera);
         },
+        deleteCamera(id: number) {
+          console.log(id);
+          const requestOptions = {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${login.token}`,
+            },
+          };
+          fetch(`http://localhost:8000/web/cameras/${id}`, requestOptions)
+            .then((response) => {
+              if (response.ok) {
+                setCameras((cameras) => {
+                  return cameras.filter((camera: Camera) => {
+                    if (camera.id === id) camera.marker.remove();
+                    return camera.id !== id;
+                  });
+                });
+              } else {
+                throw new Error("Bad response.");
+              }
+            })
+            .catch((error) => console.log(error));
+        },
       }),
-      []
+      [login]
     );
 
     // Click Map
@@ -283,6 +266,7 @@ export const Map = React.forwardRef(
                     ...camera,
                     marker: makeMarker(
                       map.current,
+                      camera.id,
                       camera.name,
                       camera.longitude,
                       camera.latitude,
@@ -317,25 +301,48 @@ export const Map = React.forwardRef(
     // the state, and then moves back to Viewing so that the dialog goes away.
     const handleDialogConfirm = useCallback(
       (name: string) => {
-        setCameras((prevCameras) => {
-          if (map.current) {
-            const newCamera: Camera = {
-              id: 10,
-              name: name,
-              latitude: clickCoordinates.latitude,
-              longitude: clickCoordinates.longitude,
-              marker: makeMarker(
-                map.current,
-                name,
-                clickCoordinates.longitude,
-                clickCoordinates.latitude,
-                onCameraClick
-              ),
-            };
-            return addCameraMiddleware([...prevCameras], newCamera, login);
-          }
-          return [...prevCameras];
-        });
+        // Try and create camera in backend.
+        const requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${login.token}`,
+          },
+          body: JSON.stringify({
+            name: name,
+            longitude: clickCoordinates.longitude,
+            latitude: clickCoordinates.latitude,
+            user: login.id,
+          }),
+        };
+
+        fetch("http://localhost:8000/web/cameras/", requestOptions)
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Couldn't post camera.");
+            }
+          })
+          .then((data) => {
+            let newCamera = { ...data };
+            setCameras((prevCameras) => {
+              if (map.current) {
+                newCamera.marker = makeMarker(
+                  map.current,
+                  newCamera.id,
+                  newCamera.name,
+                  newCamera.longitude,
+                  newCamera.latitude,
+                  onCameraClick
+                );
+                return [...prevCameras, newCamera];
+              }
+              return [...prevCameras];
+            });
+          })
+          .catch((error) => console.log(error));
+
         setMapState(MapStates.Viewing);
       },
       [clickCoordinates, login, onCameraClick]
