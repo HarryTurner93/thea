@@ -16,8 +16,10 @@ class Camera(models.Model):
 
 class Image(models.Model):
     camera = models.ForeignKey(Camera, related_name='images', on_delete=models.CASCADE)
-    object_key = models.CharField(max_length=80)
-    labels = models.JSONField(default=dict)
+    object_key = models.CharField(max_length=80, primary_key=True)
+    fox = models.FloatField(default=0.0)
+    badger = models.FloatField(default=0.0)
+    cat = models.FloatField(default=0.0)
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance, created, **kwargs):
