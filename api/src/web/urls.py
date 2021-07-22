@@ -16,17 +16,16 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
-from .views import CameraViewSet, ImageViewSet, UserViewSet, CustomObtainAuthToken, register_image, get_upload_presigned_url
+from .views import CameraViewSet, ListImages, UserViewSet, CustomObtainAuthToken, register_image, get_upload_presigned_url
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register('cameras', CameraViewSet, basename='Camera')
-router.register('images', ImageViewSet, basename='Image')
 router.register('users', UserViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
     url(r'^api-token-auth/', CustomObtainAuthToken.as_view()),
     url(r'^get-upload-presigned-url/', get_upload_presigned_url),
-    url(r'^register-image/', register_image)
+    url(r'^images/', ListImages.as_view())
 ]

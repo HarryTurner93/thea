@@ -1,13 +1,19 @@
 from django.contrib.auth.models import User
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, permissions, status, mixins, generics
+from rest_framework.views import APIView
 from .models import Camera, Image
 from .serializers import CameraSerializer, SingleCameraSerializer, ImageSerializer, UserSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import PermissionDenied, ParseError
+
 from .config.config import CONFIG
 
+# Todo: Add type annotations
+# Todo: Add docstrings.
+# Todo: Lint
 
 class CameraViewSet(viewsets.ModelViewSet):
     serializer_class = CameraSerializer
@@ -21,18 +27,6 @@ class CameraViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return CameraSerializer
         return SingleCameraSerializer
-
-class ImageViewSet(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
-    serializer_class = ImageSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    #def get_queryset(self):
-    #    requested_camera_id = self.request.GET.get('camera_id')
-    #    cameras_belonging_to_user = list(Camera.objects.filter(user=self.request.user).values_list('pk', flat=True))
-    #    print(requested_camera_id, cameras_belonging_to_user)
-    #    print(requested_camera_id in cameras_belonging_to_user)
-    #    return Image.objects.filter(camera=requested_camera_id)
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -53,6 +47,38 @@ def get_upload_presigned_url(request):
         "OBJECT"
     )
     return Response(response)
+
+class ListImages(mixins.ListModelMixin,
+                 mixins.CreateModelMixin,
+                 generics.GenericAPIView):
+
+    serializer_class = ImageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        requested_camera_id = self.request.GET.get('camera_id', None)
+        if not requested_camera_id:
+            raise ParseError(detail="Missing 'camera_id'")
+
+        cameras_belonging_to_user = list(Camera.objects.filter(user=self.request.user).values_list('pk', flat=True))
+
+        if int(requested_camera_id) not in cameras_belonging_to_user:
+             raise PermissionDenied(detail="Not your camera.")
+
+        return Image.objects.filter(camera=requested_camera_id)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+#def get_queryset(self):
+    #    requested_camera_id = self.request.GET.get('camera_id')
+    #    cameras_belonging_to_user = list(Camera.objects.filter(user=self.request.user).values_list('pk', flat=True))
+    #    print(requested_camera_id, cameras_belonging_to_user)
+    #    print(requested_camera_id in cameras_belonging_to_user)
+    #    return Image.objects.filter(camera=requested_camera_id)
 
 @api_view(['POST'])
 def register_image(request):
