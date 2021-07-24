@@ -7,6 +7,8 @@ import {
   MediaIcon,
   FilePicker,
   Spinner,
+  Pane,
+  Dialog, TextInputField
 } from "evergreen-ui";
 
 import { v4 } from "uuid";
@@ -41,6 +43,46 @@ export function SimpleLabel(props: labelProps) {
       </div>
     </div>
   );
+}
+
+interface DialogProps {
+  confirmDelete(): void;
+}
+
+function ConfirmDeleteDialog({
+  confirmDelete,
+}: DialogProps) {
+  const [isShown, setIsShown] = React.useState(false)
+
+  return (
+    <Pane>
+      <Dialog
+        isShown={isShown}
+        title="Delete Camera"
+        intent="danger"
+        onCloseComplete={() => setIsShown(false)}
+        onConfirm={() => {
+          setIsShown(false)
+          confirmDelete()
+        }}
+        confirmLabel="Delete Camera"
+      >
+        Are you sure you want to delete this camera? This action cannot be undone.
+      </Dialog>
+
+      <Button
+        className={styles.button}
+        marginRight={12}
+        iconBefore={TrashIcon}
+        intent="danger"
+        onClick={() => {
+          setIsShown(true);
+        }}
+      >
+        Delete Camera
+      </Button>
+    </Pane>
+  )
 }
 
 const mapStateToProps = (state: RootState, wrapperProps: WrapperProps) => ({
@@ -217,18 +259,10 @@ function Popup({
               ) : null}
             </div>
             <div className={styles.footer}>
-              <Button
-                className={styles.button}
-                marginRight={12}
-                iconBefore={TrashIcon}
-                intent="danger"
-                onClick={() => {
-                  closePopUp();
-                  onDeleteCamera(popUpInfo.id);
-                }}
-              >
-                Delete Camera
-              </Button>
+              <ConfirmDeleteDialog confirmDelete={() => {
+                closePopUp();
+                onDeleteCamera(popUpInfo.id);
+              }}/>
               <Button
                 className={styles.button}
                 marginRight={16}
