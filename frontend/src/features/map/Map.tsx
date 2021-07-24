@@ -158,7 +158,6 @@ export const Map = React.forwardRef(
           setMapState(MapStates.AddingCamera);
         },
         deleteCamera(id: number) {
-          console.log(id);
           const requestOptions = {
             method: "DELETE",
             headers: {
@@ -238,10 +237,7 @@ export const Map = React.forwardRef(
     // results in them all being displayed on the map.
     useEffect(() => {
       // If token is "" just skip, don't hit the API.
-      if (login.token === "" || cameras.length > 0) {
-        console.log("Skipping fetch, already have cameras.");
-        return;
-      }
+      if (login.token === "" || cameras.length > 0) return;
 
       const options = {
         headers: new Headers({ Authorization: `Token ${login.token}` }),
@@ -289,7 +285,7 @@ export const Map = React.forwardRef(
 
         // Catch errors.
         .catch((error) => console.log(error));
-    }, [onCameraClick, login]);
+    }, [onCameraClick, login, cameras]);
 
     // Close Naming Dialog
     // This callback is passed to the dialog that opens when the Map is in NamingCamera state.

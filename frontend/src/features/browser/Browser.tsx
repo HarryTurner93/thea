@@ -1,13 +1,6 @@
 import React, { useEffect } from "react";
 
-import {
-  SegmentedControl,
-  Pagination,
-  MediaIcon,
-  Button,
-  UndoIcon,
-  Label,
-} from "evergreen-ui";
+import { SegmentedControl, Pagination } from "evergreen-ui";
 
 import styles from "./Browser.module.css";
 import { connect, ConnectedProps } from "react-redux";
@@ -54,6 +47,8 @@ function Image({ imageData }: ImageProps) {
     <div className={styles.imageContainer}>
       <img
         style={{ width: "300px", height: "200px" }}
+        // Todo: Is this a pattern that has a short version?
+        alt={imageData.object_key ? imageData.object_key : "Placeholder"}
         src={
           imageData
             ? `http://localstack:4566/images/${imageData.object_key}`
@@ -93,7 +88,7 @@ function Browser({ browserState, browserInfo, closeBrowser, login }: Props) {
   const [totalPages, setTotalPages] = React.useState(1);
   const [page, setPage] = React.useState(1);
 
-  const onOpen = useEffect(() => {
+  useEffect(() => {
     if (browserState) {
       setImages([]);
       setTotalPages(1);

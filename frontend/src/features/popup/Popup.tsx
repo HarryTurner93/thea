@@ -8,14 +8,14 @@ import {
   FilePicker,
   Spinner,
   Pane,
-  Dialog, TextInputField
+  Dialog,
 } from "evergreen-ui";
 
 import { v4 } from "uuid";
 import styles from "./Popup.module.css";
 import { connect, ConnectedProps } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
-import { closePopUp, openPopUp } from "../popup/popupSlice";
+import { closePopUp } from "../popup/popupSlice";
 import { getPopUpInfo, getPopUpStatus } from "./popupSlice";
 import { browserInfo, closeBrowser } from "../browser/browserSlice";
 import { useAppDispatch } from "../../app/hooks";
@@ -49,10 +49,8 @@ interface DialogProps {
   confirmDelete(): void;
 }
 
-function ConfirmDeleteDialog({
-  confirmDelete,
-}: DialogProps) {
-  const [isShown, setIsShown] = React.useState(false)
+function ConfirmDeleteDialog({ confirmDelete }: DialogProps) {
+  const [isShown, setIsShown] = React.useState(false);
 
   return (
     <Pane>
@@ -62,12 +60,13 @@ function ConfirmDeleteDialog({
         intent="danger"
         onCloseComplete={() => setIsShown(false)}
         onConfirm={() => {
-          setIsShown(false)
-          confirmDelete()
+          setIsShown(false);
+          confirmDelete();
         }}
         confirmLabel="Delete Camera"
       >
-        Are you sure you want to delete this camera? This action cannot be undone.
+        Are you sure you want to delete this camera? This action cannot be
+        undone.
       </Dialog>
 
       <Button
@@ -82,7 +81,7 @@ function ConfirmDeleteDialog({
         Delete Camera
       </Button>
     </Pane>
-  )
+  );
 }
 
 const mapStateToProps = (state: RootState, wrapperProps: WrapperProps) => ({
@@ -180,8 +179,12 @@ function Popup({
     }
   }, [login, files, popUpInfo]);
 
-  const getImageCount = useEffect(() => {
-    // Try and create camera in backend.
+  // Grab Counts
+  // Todo: Make this grab all camera data so that map doesn't push popUpInfo?
+  useEffect(() => {
+    // If popUpInfo.id is 0 then it's not initialised yet.
+    if (popUpInfo.id === 0) return;
+
     const requestOptions = {
       method: "GET",
       headers: {
@@ -199,7 +202,6 @@ function Popup({
         }
       })
       .then((data) => {
-        console.log(data);
         setImageCount(data.image_count);
       })
       .catch((error) => console.log(error));
@@ -259,10 +261,12 @@ function Popup({
               ) : null}
             </div>
             <div className={styles.footer}>
-              <ConfirmDeleteDialog confirmDelete={() => {
-                closePopUp();
-                onDeleteCamera(popUpInfo.id);
-              }}/>
+              <ConfirmDeleteDialog
+                confirmDelete={() => {
+                  closePopUp();
+                  onDeleteCamera(popUpInfo.id);
+                }}
+              />
               <Button
                 className={styles.button}
                 marginRight={16}
