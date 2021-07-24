@@ -5,6 +5,10 @@ First time
 bash start.sh
 Starts the API, starts postgres, starts S3 (localstack)
 Create bucket -  aws s3api create-bucket --bucket images --endpoint-url http://localhost:4566
+Add localstack to hosts under 127.0.0.1 so the front end can resolve it.
+aws --endpoint-url http://localhost:4566 s3api put-bucket-cors --bucket images --cors-configuration file://s3_cors.json
+aws --endpoint-url http://localhost:4566 s3api put-bucket-acl --bucket images --acl public-read
+
 
 Useful commands.
 See buckets - aws s3api list-buckets --endpoint-url http://localhost:4566

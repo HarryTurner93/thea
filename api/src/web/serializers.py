@@ -13,12 +13,10 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CameraSerializer(serializers.ModelSerializer):
+    image_count = serializers.SerializerMethodField()
     class Meta:
         model = Camera
         fields = '__all__'
 
-class SingleCameraSerializer(serializers.ModelSerializer):
-    images = ImageSerializer(many=True, read_only=True)
-    class Meta:
-        model = Camera
-        fields = '__all__'
+    def get_image_count(self, obj):
+        return obj.images.count()
