@@ -57,9 +57,10 @@ p {
 }
 
 .footer {
-  padding: 0px 10px 10px 10px;
+  padding: 0px 10px 0px 10px;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   pointer-events: all;
   cursor: pointer;
 }
@@ -70,7 +71,7 @@ p {
 
 .filterBar {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding: 10px;
   padding-left: 20px;
   pointer-events: all;
@@ -87,4 +88,11 @@ p {
 }
 .imageContainer {
   padding: 10px;
+}
+.splash {
+  text-align: center;
+  padding: 150px 250px 150px 250px;
+}
+.splash p {
+  color: #95a3b3;
 }

@@ -12,7 +12,7 @@ export interface PopUpState {
 }
 
 const initialState: PopUpState = {
-  open: true,
+  open: false,
   browserInfo: {
     id: 0,
     name: "Test",

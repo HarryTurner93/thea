@@ -23,6 +23,7 @@ function makeMarker(
   name: string,
   longitude: number,
   latitude: number,
+  numImages: number,
   callback: (popUpInfo: popUpInfo) => void
 ) {
   let el = document.createElement("div");
@@ -35,7 +36,7 @@ function makeMarker(
       name: name,
       latitude: latitude,
       longitude: longitude,
-      numImages: 0,
+      numImages: numImages,
     });
   };
 
@@ -56,6 +57,7 @@ interface Camera {
   name: string;
   longitude: number;
   latitude: number;
+  image_count: number;
   marker: mapboxgl.Marker;
 }
 
@@ -271,6 +273,7 @@ export const Map = React.forwardRef(
                       camera.name,
                       camera.longitude,
                       camera.latitude,
+                      camera.image_count,
                       onCameraClick
                     ),
                   };
@@ -335,6 +338,7 @@ export const Map = React.forwardRef(
                   newCamera.name,
                   newCamera.longitude,
                   newCamera.latitude,
+                  newCamera.image_count,
                   onCameraClick
                 );
                 return [...prevCameras, newCamera];

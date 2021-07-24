@@ -64,10 +64,11 @@ function App() {
           ) : (
             <div className={styles.headerContainer}>
               <div className={styles.headerContainerFloatLeft}>
-                <Browser />
+                <Browser login={login} />
                 <Popup
                   onDeleteCamera={onDeleteCamera}
                   onOpenBrowser={onOpenBrowser}
+                  login={login}
                 />
               </div>
               <div className={styles.iconBar}>
