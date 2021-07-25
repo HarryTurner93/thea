@@ -1,5 +1,5 @@
 import { Image } from './types';
 
 export function noScores(image: Image) {
-  return image.fox === 0;
+  return image ? image.fox === 0 : false;
 }
