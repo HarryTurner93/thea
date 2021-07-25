@@ -1,8 +1,9 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import loginReducer from "../features/login/loginSlice";
-import counterReducer from "../features/counter/counterSlice";
-import popupReducer from "../features/popup/popupSlice";
-import browserReducer from "../features/browser/browserSlice";
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+
+import browserReducer from '../features/browser/browserSlice';
+import counterReducer from '../features/counter/counterSlice';
+import loginReducer from '../features/login/loginSlice';
+import popupReducer from '../features/popup/popupSlice';
 
 export const store = configureStore({
   reducer: {

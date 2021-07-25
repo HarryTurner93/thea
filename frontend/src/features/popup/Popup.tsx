@@ -1,5 +1,3 @@
-import React, { useCallback, useEffect, useState } from "react";
-
 import {
   Button,
   TrashIcon,
@@ -9,17 +7,19 @@ import {
   Spinner,
   Pane,
   Dialog,
-} from "evergreen-ui";
+} from 'evergreen-ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { v4 } from 'uuid';
 
-import { v4 } from "uuid";
-import styles from "./Popup.module.css";
-import { connect, ConnectedProps } from "react-redux";
-import { AppDispatch, RootState } from "../../app/store";
-import { closePopUp } from "../popup/popupSlice";
-import { getPopUpInfo, getPopUpStatus } from "./popupSlice";
-import { browserInfo, closeBrowser } from "../browser/browserSlice";
-import { useAppDispatch } from "../../app/hooks";
-import { LoginState } from "../login/loginSlice";
+import { useAppDispatch } from '../../app/hooks';
+import { AppDispatch, RootState } from '../../app/store';
+import { browserInfo, closeBrowser } from '../browser/browserSlice';
+import { LoginState } from '../login/loginSlice';
+import { closePopUp } from '../popup/popupSlice';
+
+import styles from './Popup.module.css';
+import { getPopUpInfo, getPopUpStatus } from './popupSlice';
 
 interface labelProps {
   label: string;
@@ -39,7 +39,7 @@ export function SimpleLabel(props: labelProps) {
         <p>{props.label}</p>
       </div>
       <div className={styles.labelValue}>
-        <p>{props.value}</p>
+        <p data-name={`label-${props.label}`}>{props.value}</p>
       </div>
     </div>
   );
@@ -63,10 +63,9 @@ function ConfirmDeleteDialog({ confirmDelete }: DialogProps) {
           setIsShown(false);
           confirmDelete();
         }}
-        confirmLabel="Delete Camera"
+        confirmLabel="Confirm Delete"
       >
-        Are you sure you want to delete this camera? This action cannot be
-        undone.
+        Are you sure you want to delete this camera? This action cannot be undone.
       </Dialog>
 
       <Button
@@ -95,14 +94,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
 
-function Popup({
-  popUpState,
-  popUpInfo,
-  closePopUp,
-  onDeleteCamera,
-  onOpenBrowser,
-  login,
-}: Props) {
+function Popup({ popUpState, popUpInfo, closePopUp, onDeleteCamera, onOpenBrowser, login }: Props) {
   const dispatch = useAppDispatch();
   const [files, setFiles] = useState<FileList | null>(null);
   const [uploaded, setUploaded] = useState(0);
@@ -132,10 +124,10 @@ function Popup({
 
           // Post data.
           const formData = new FormData();
-          formData.append("File", files[i], uuid_name);
+          formData.append('File', files[i], uuid_name);
 
           fetch(`http://localstack:4566/images/${uuid_name}`, {
-            method: "PUT",
+            method: 'PUT',
             body: formData,
           })
             .then((response) => {
@@ -145,12 +137,12 @@ function Popup({
                 throw new Error("Couldn't get presigned URL.");
               }
             })
-            .then((data) => {
+            .then(() => {
               // Try and create camera in backend.
               const requestOptions = {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                  "Content-Type": "application/json",
+                  'Content-Type': 'application/json',
                   Authorization: `Token ${login.token}`,
                 },
                 body: JSON.stringify({
@@ -159,7 +151,7 @@ function Popup({
                 }),
               };
 
-              fetch("http://localhost:8000/web/images/", requestOptions)
+              fetch('http://localhost:8000/web/images/', requestOptions)
                 .then((response) => {
                   if (response.ok) {
                     return response.json();
@@ -167,9 +159,7 @@ function Popup({
                     throw new Error("Couldn't post camera.");
                   }
                 })
-                .then((data) => {
-                  setUploaded((uploaded) => uploaded + 1);
-                })
+                .then(() => setUploaded((uploaded) => uploaded + 1))
                 .catch((error) => console.log(error));
             })
             .catch((error) => console.log(error));
@@ -186,9 +176,9 @@ function Popup({
     if (popUpInfo.id === 0) return;
 
     const requestOptions = {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Token ${login.token}`,
       },
     };
@@ -219,19 +209,13 @@ function Popup({
               </h3>
             </div>
             <div className={styles.body}>
-              <SimpleLabel
-                label="Latitude"
-                value={popUpInfo.latitude.toString()}
-              />
-              <SimpleLabel
-                label="Longitude"
-                value={popUpInfo.longitude.toString()}
-              />
+              <SimpleLabel label="Latitude" value={popUpInfo.latitude.toString()} />
+              <SimpleLabel label="Longitude" value={popUpInfo.longitude.toString()} />
               <SimpleLabel label="Images" value={imageCount} />
             </div>
             <div className={styles.body}>
               <h3>Upload images to this camera</h3>
-              <div style={{ display: "flex" }}>
+              <div style={{ display: 'flex' }}>
                 <FilePicker
                   className={styles.button}
                   multiple
@@ -242,6 +226,7 @@ function Popup({
                 />
                 <Button
                   className={styles.button}
+                  data-name="upload-images"
                   marginRight={12}
                   iconBefore={CloudUploadIcon}
                   intent="none"
@@ -251,7 +236,7 @@ function Popup({
                 </Button>
               </div>
               {toUpload !== uploaded ? (
-                <div style={{ display: "flex", paddingTop: "20px" }}>
+                <div style={{ display: 'flex', paddingTop: '20px' }}>
                   <Spinner size={16} marginRight={12} />
                   <SimpleLabel
                     label="Uploaded"

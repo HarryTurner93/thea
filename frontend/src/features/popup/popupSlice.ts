@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { RootState } from '../../app/store';
 
 export type popUpInfo = {
   id: number;
@@ -18,7 +19,7 @@ const initialState: PopUpState = {
   open: false,
   popUpInfo: {
     id: 0,
-    name: "",
+    name: '',
     latitude: 0,
     longitude: 0,
     numImages: 0,
@@ -26,7 +27,7 @@ const initialState: PopUpState = {
 };
 
 export const popupSlice = createSlice({
-  name: "popup",
+  name: 'popup',
   initialState,
   reducers: {
     openPopUp: (state, action: PayloadAction<popUpInfo>) => {

@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
-import { Dialog } from "evergreen-ui";
+import { Dialog } from 'evergreen-ui';
+import React, { useCallback } from 'react';
 
-import styles from "./Circle.module.css";
+import styles from './Circle.module.css';
 
 interface Props {
   text: string;
@@ -20,6 +20,7 @@ export function CircleButton({ text, doPopUp = false, callback }: Props) {
     }
   }, [callback, doPopUp, setIsShown]);
 
+  // Todo: This dialog is not abstract enough
   return (
     <div className={styles.circleContainer}>
       <Dialog
@@ -32,7 +33,7 @@ export function CircleButton({ text, doPopUp = false, callback }: Props) {
       >
         Confirm that you want to log out.
       </Dialog>
-      <div onClick={handleClick} className={styles.circle}>
+      <div onClick={handleClick} className={styles.circle} data-name={`circle-button-${text}`}>
         <h1>{text}</h1>
       </div>
     </div>

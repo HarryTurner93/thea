@@ -1,2 +1,3 @@
 npx prettier --write .
-eslint src/ --ext .tsx
+eslint src/
+eslint cypress/

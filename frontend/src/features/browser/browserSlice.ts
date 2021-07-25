@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { RootState } from '../../app/store';
 
 export type browserInfo = {
   id: number;
@@ -15,12 +16,12 @@ const initialState: PopUpState = {
   open: false,
   browserInfo: {
     id: 0,
-    name: "Test",
+    name: 'Test',
   },
 };
 
 export const browserSlice = createSlice({
-  name: "browser",
+  name: 'browser',
   initialState,
   reducers: {
     openBrowser: (state, action: PayloadAction<browserInfo>) => {

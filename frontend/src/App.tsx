@@ -1,15 +1,15 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef } from 'react';
 
-import { Map } from "./features/map/Map";
-import { CircleButton } from "./features/circleButton/CircleButton";
-import Login from "./features/login/Login";
-import styles from "./App.module.css";
-import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { getLogin, setLogin } from "./features/login/loginSlice";
-import { openPopUp, closePopUp, popUpInfo } from "./features/popup/popupSlice";
-import Popup from "./features/popup/Popup";
-import Browser from "./features/browser/Browser";
-import { browserInfo, openBrowser } from "./features/browser/browserSlice";
+import styles from './App.module.css';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import Browser from './features/browser/Browser';
+import { browserInfo, openBrowser } from './features/browser/browserSlice';
+import { CircleButton } from './features/circleButton/CircleButton';
+import Login from './features/login/Login';
+import { getLogin, setLogin } from './features/login/loginSlice';
+import { Map } from './features/map/Map';
+import Popup from './features/popup/Popup';
+import { openPopUp, closePopUp, popUpInfo } from './features/popup/popupSlice';
 
 function App() {
   const login = useAppSelector(getLogin);
@@ -51,7 +51,7 @@ function App() {
   // logs the user out by setting the token to "". It also closes the popUp incase it was open.
   // The map is alerted when the token changes to "" and wipes all sensors off it as well.
   const handleLogOut = useCallback(() => {
-    dispatch(setLogin({ token: "", id: 0 }));
+    dispatch(setLogin({ token: '', id: 0 }));
     dispatch(closePopUp());
   }, [dispatch]);
 
@@ -59,7 +59,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Map onCameraClick={onCameraClick} login={login} ref={mapRef}>
-          {login.token === "" ? (
+          {login.token === '' ? (
             <Login />
           ) : (
             <div className={styles.headerContainer}>
@@ -76,11 +76,7 @@ function App() {
                   <CircleButton text="＋" callback={onAddCamera} />
                 </div>
                 <div className={styles.iconContainer}>
-                  <CircleButton
-                    text="➜"
-                    doPopUp={true}
-                    callback={handleLogOut}
-                  />
+                  <CircleButton text="➜" doPopUp={true} callback={handleLogOut} />
                 </div>
               </div>
             </div>

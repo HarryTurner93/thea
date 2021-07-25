@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { RootState } from '../../app/store';
 
 export interface LoginState {
   token: string;
@@ -7,12 +8,12 @@ export interface LoginState {
 }
 
 const initialState: LoginState = {
-  token: "",
+  token: '',
   id: 0,
 };
 
 export const loginSlice = createSlice({
-  name: "login",
+  name: 'login',
   initialState,
   reducers: {
     setLogin: (state, action: PayloadAction<LoginState>) => {

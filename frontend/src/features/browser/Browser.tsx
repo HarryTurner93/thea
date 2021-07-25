@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
+import { SegmentedControl, Pagination } from 'evergreen-ui';
+import React, { useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 
-import { SegmentedControl, Pagination } from "evergreen-ui";
+import { AppDispatch, RootState } from '../../app/store';
+import { closeBrowser } from '../browser/browserSlice';
+import { LoginState } from '../login/loginSlice';
+import { SimpleLabel } from '../popup/Popup';
 
-import styles from "./Browser.module.css";
-import { connect, ConnectedProps } from "react-redux";
-import { AppDispatch, RootState } from "../../app/store";
-import { closeBrowser } from "../browser/browserSlice";
-import { getBrowserInfo, getBrowserStatus } from "./browserSlice";
-import { LoginState } from "../login/loginSlice";
-import { SimpleLabel } from "../popup/Popup";
+import styles from './Browser.module.css';
+import { getBrowserInfo, getBrowserStatus } from './browserSlice';
 
 type WrapperState = {
   login: LoginState;
@@ -46,29 +46,20 @@ function Image({ imageData }: ImageProps) {
   return (
     <div className={styles.imageContainer}>
       <img
-        style={{ width: "300px", height: "200px" }}
+        style={{ width: '300px', height: '200px' }}
         // Todo: Is this a pattern that has a short version?
-        alt={imageData.object_key ? imageData.object_key : "Placeholder"}
+        alt={imageData ? imageData.object_key : 'Placeholder'}
         src={
           imageData
             ? `http://localstack:4566/images/${imageData.object_key}`
-            : "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640"
+            : 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640'
         }
       />
       {imageData ? (
-        <div style={{ display: "flex", justifyContent: "space-around" }}>
-          <SimpleLabel
-            label="Fox"
-            value={`${Math.round(imageData.fox * 100)}%`}
-          />
-          <SimpleLabel
-            label="Badger"
-            value={`${Math.round(imageData.badger * 100)}%`}
-          />
-          <SimpleLabel
-            label="Cat"
-            value={`${Math.round(imageData.cat * 100)}%`}
-          />
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <SimpleLabel label="Fox" value={`${Math.round(imageData.fox * 100)}%`} />
+          <SimpleLabel label="Badger" value={`${Math.round(imageData.badger * 100)}%`} />
+          <SimpleLabel label="Cat" value={`${Math.round(imageData.cat * 100)}%`} />
         </div>
       ) : null}
     </div>
@@ -77,13 +68,11 @@ function Image({ imageData }: ImageProps) {
 
 function Browser({ browserState, browserInfo, closeBrowser, login }: Props) {
   const [options] = React.useState([
-    { label: "Fox", value: "fox" },
-    { label: "Badger", value: "badger" },
-    { label: "Cat", value: "cat" },
+    { label: 'Fox', value: 'fox' },
+    { label: 'Badger', value: 'badger' },
+    { label: 'Cat', value: 'cat' },
   ]);
-  const [ordering, setOrdering] = React.useState<string | number | boolean>(
-    "fox"
-  );
+  const [ordering, setOrdering] = React.useState<string | number | boolean>('fox');
   const [images, setImages] = React.useState<ImageInfo[]>([]);
   const [totalPages, setTotalPages] = React.useState(1);
   const [page, setPage] = React.useState(1);
@@ -103,9 +92,9 @@ function Browser({ browserState, browserInfo, closeBrowser, login }: Props) {
 
       // Try and create camera in backend.
       const requestOptions = {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Token ${login.token}`,
         },
       };
