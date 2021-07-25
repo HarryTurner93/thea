@@ -9,7 +9,8 @@ import { popUpInfo } from '../popup/popupSlice';
 import { LoginState } from '../login/loginSlice';
 import { Camera, MapStates } from './types';
 import { NewCameraDialog } from './components/NewCameraDialog';
-import { makeMarker } from './utils';
+import { injectMarker } from './utils';
+import { deleteCamera, getCameras, postCamera } from './api';
 
 // Setup Mapbox.
 mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
@@ -54,9 +55,9 @@ export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, 
     });
   });
 
-  // Register AddCamera
-  // This registers the addCamera as an externally callable function so other
-  // components can "trigger" it by using the Map as a reference. This is how I get
+  // Register Externally Callable Functions
+  // This registers several functions an externally callable function so other
+  // components can "trigger" them by using the Map as a reference. This is how I get
   // other components to trigger changes in MapState. Another way to do it would be to
   // use redux but I couldn't get the redux action creator to make the previous state
   // available inside setState (which I use in another function). Hence I used React
@@ -64,32 +65,21 @@ export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, 
   useImperativeHandle(
     ref,
     () => ({
-      // Add camera changes the cursor and moves the state machine to AddingCamera state.
+      // addCamera triggers the map to move into the add camera state.
       addCamera() {
         setMapState(MapStates.AddingCamera);
       },
+
+      // deleteCamera removes a camera by calling the API and deleting from state.
       deleteCamera(id: number) {
-        const requestOptions = {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Token ${login.token}`,
-          },
-        };
-        fetch(`http://localhost:8000/web/cameras/${id}`, requestOptions)
-          .then((response) => {
-            if (response.ok) {
-              setCameras((cameras) => {
-                return cameras.filter((camera: Camera) => {
-                  if (camera.id === id) camera.marker.remove();
-                  return camera.id !== id;
-                });
-              });
-            } else {
-              throw new Error('Bad response.');
-            }
-          })
-          .catch((error) => console.log(error));
+        deleteCamera(login, id).then(() => {
+          setCameras((cameras) => {
+            return cameras.filter((camera: Camera) => {
+              if (camera.id === id && camera.marker) camera.marker.remove();
+              return camera.id !== id;
+            });
+          });
+        });
       },
     }),
     [login]
@@ -133,7 +123,7 @@ export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, 
     if (login.token === '') {
       setCameras((cameras) => {
         for (const camera of cameras) {
-          camera.marker.remove();
+          if (camera.marker) camera.marker.remove();
         }
         return [];
       });
@@ -150,19 +140,8 @@ export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, 
     // If token is "" just skip, don't hit the API.
     if (login.token === '' || cameras.length > 0) return;
 
-    const options = {
-      headers: new Headers({ Authorization: `Token ${login.token}` }),
-    };
-    fetch('http://localhost:8000/web/cameras/', options)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Bad response.');
-        }
-      })
-
-      // Update array of cameras with any new ones.
+    // Update array of cameras with any new ones.
+    getCameras(login)
       .then((data) =>
         setCameras((existingCameras) => {
           const existingIDs = existingCameras.map((camera) => camera.id);
@@ -170,18 +149,7 @@ export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, 
           const markedCameras = newCameras
             .map((camera: Camera) => {
               if (map.current) {
-                return {
-                  ...camera,
-                  marker: makeMarker(
-                    map.current,
-                    camera.id,
-                    camera.name,
-                    camera.longitude,
-                    camera.latitude,
-                    camera.image_count,
-                    onCameraClick
-                  ),
-                };
+                return injectMarker(map.current, camera, onCameraClick);
               } else {
                 return null;
               }
@@ -211,47 +179,17 @@ export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, 
   const handleDialogConfirm = useCallback(
     (name: string) => {
       // Try and create camera in backend.
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Token ${login.token}`,
-        },
-        body: JSON.stringify({
-          name: name,
-          longitude: clickCoordinates.longitude,
-          latitude: clickCoordinates.latitude,
-          user: login.id,
-        }),
-      };
-
-      fetch('http://localhost:8000/web/cameras/', requestOptions)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Couldn't post camera.");
-          }
-        })
-        .then((data) => {
-          const newCamera = { ...data };
+      postCamera(login, name, clickCoordinates.longitude, clickCoordinates.latitude).then(
+        (data) => {
           setCameras((prevCameras) => {
             if (map.current) {
-              newCamera.marker = makeMarker(
-                map.current,
-                newCamera.id,
-                newCamera.name,
-                newCamera.longitude,
-                newCamera.latitude,
-                newCamera.image_count,
-                onCameraClick
-              );
+              const newCamera = injectMarker(map.current, data, onCameraClick);
               return [...prevCameras, newCamera];
             }
             return [...prevCameras];
           });
-        })
-        .catch((error) => console.log(error));
+        }
+      );
 
       setMapState(MapStates.Viewing);
     },

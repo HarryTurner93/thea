@@ -16,8 +16,10 @@ export function login(username: string, password: string) {
       .then((response) => {
         if (response.ok) {
           return response.json();
-        } else {
+        } else if (response.status === 401) {
           throw new Error('Invalid credentials.');
+        } else {
+          throw new Error('Server not configured properly.');
         }
       })
       .then((data) => resolve({ error: null, token: data.token, id: data.id }))

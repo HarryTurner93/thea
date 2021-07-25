@@ -6,7 +6,7 @@ export type Camera = {
   longitude: number;
   latitude: number;
   image_count: number;
-  marker: mapboxgl.Marker;
+  marker?: mapboxgl.Marker;
 };
 
 // This defines the state machine for the Map.
