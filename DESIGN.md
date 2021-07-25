@@ -71,7 +71,15 @@ I created these mockups as a guide to building the UI, the details are slightly 
 ![Browser](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/mock_2.png)
 
 ## Front End Components
+Philosophy. Not particularly experienced building React apps. Previous experiences result in a tangled mess. This time I'm trying to keep things modular with less coupling and stronger boundaries.
+
 #### Map
+The map component is responsible for showing a browseable map and displaying the cameras in the right locations as icons. It also manages the cameras by handling the add/delete logic, including the necessary calls to the server. I designed it this way because I felt the cameras were inseparable to the map, it also made it easier because of the way icons are handled in mapbox. Speaking of which, I use mapbox to actually display the map.<br><br>
+
+I designed it as a component that wraps other components, that is, it accepts a 'children' prop which it then renders appropriately. This made it fairly easy to overlay components onto the map without having to worry about the CSS styles on the children component. This was achieved by the map component having two layers, the map layer and then an overlay layer with appropriate CSS styles. All children are rendered on this layer, and appear on top of the map.<br><br>
+
+The map is not connected to any global state, it exposes two functions as externally callable functions. The way I achieved this was to make the map a reference value in the parent App, which can then use the reference to call the functions. I don't know whether this is good or bad practice, but it allowed me to expose two methods to the rest of the application to allow it manipulate the map and the cameras. The two methods are addCamera and deleteCamera respectively. deleteCamera makes the necessary call to the server and removes the camera from the internal state. addCamera triggers the next state in a state machine that then asks a user for a click on the map, followed by a dialog asking for a name, followed finally by the call to the server to create the camera then adding the resulting camera to the internal state.
+
 Map component, when the token changes it fetches a list of cameras and displays them. BEcause these are markers it creates special objects to track them all and doesn't add cameras already in the list. 
 
 
