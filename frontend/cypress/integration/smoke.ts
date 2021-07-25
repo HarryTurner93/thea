@@ -46,6 +46,6 @@ describe('smoke', () => {
     cy.get('[data-name="circle-button-➜"]').click();
     cy.contains('Cancel').click();
     cy.get('[data-name="circle-button-➜"]').click();
-    cy.contains('Log Out').click();
+    cy.contains('Log out').click();
   });
 });

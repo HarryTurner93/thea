@@ -5,33 +5,42 @@ import styles from './Circle.module.css';
 
 interface Props {
   text: string;
-  doPopUp?: boolean;
+  dialog?: boolean;
+  dialogTitle?: string;
+  dialogBody?: string;
+  dialogButton?: string;
   callback(): void;
 }
 
-export function CircleButton({ text, doPopUp = false, callback }: Props) {
+export function CircleButton({
+  text,
+  dialog = false,
+  callback,
+  dialogTitle = '',
+  dialogBody = '',
+  dialogButton = '',
+}: Props) {
   const [isShown, setIsShown] = React.useState(false);
 
   const handleClick = useCallback(() => {
-    if (doPopUp) {
+    if (dialog) {
       setIsShown(true);
     } else {
       callback();
     }
-  }, [callback, doPopUp, setIsShown]);
+  }, [callback, dialog, setIsShown]);
 
-  // Todo: This dialog is not abstract enough
   return (
     <div className={styles.circleContainer}>
       <Dialog
         isShown={isShown}
-        title="Log out?"
+        title={dialogTitle}
         intent="danger"
         onCloseComplete={() => setIsShown(false)}
         onConfirm={() => callback()}
-        confirmLabel="Log Out"
+        confirmLabel={dialogButton}
       >
-        Confirm that you want to log out.
+        {dialogBody}
       </Dialog>
       <div onClick={handleClick} className={styles.circle} data-name={`circle-button-${text}`}>
         <h1>{text}</h1>

@@ -4,7 +4,7 @@ import styles from './App.module.css';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import Browser from './features/browser/Browser';
 import { browserInfo, openBrowser } from './features/browser/browserSlice';
-import { CircleButton } from './features/circleButton/CircleButton';
+import { CircleButton } from './components/Elements/CircleButton/CircleButton';
 import Login from './features/login/Login';
 import { getLogin, setLogin } from './features/login/loginSlice';
 import { Map } from './features/map/Map';
@@ -76,7 +76,14 @@ function App() {
                   <CircleButton text="＋" callback={onAddCamera} />
                 </div>
                 <div className={styles.iconContainer}>
-                  <CircleButton text="➜" doPopUp={true} callback={handleLogOut} />
+                  <CircleButton
+                    text="➜"
+                    dialog={true}
+                    callback={handleLogOut}
+                    dialogTitle="Confirm"
+                    dialogBody="Are you sure you want to log out?"
+                    dialogButton="Log out"
+                  />
                 </div>
               </div>
             </div>
