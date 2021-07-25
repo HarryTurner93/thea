@@ -9,7 +9,7 @@ import Login from './features/login/Login';
 import { getLogin, setLogin } from './features/login/loginSlice';
 import { Map } from './features/map/Map';
 import Popup from './features/popup/Popup';
-import { openPopUp, closePopUp, popUpInfo } from './features/popup/popupSlice';
+import { openPopUp, closePopUp, popUpCameraID } from './features/popup/popupSlice';
 
 function App() {
   const login = useAppSelector(getLogin);
@@ -34,7 +34,7 @@ function App() {
   // dispatches an openPopUp action which is handled by the PopUp. These actions contain the
   // info from the clicked on camera for displaying in the PopUp.
   const onCameraClick = useCallback(
-    (popUpInfo: popUpInfo) => {
+    (popUpInfo: popUpCameraID) => {
       dispatch(openPopUp(popUpInfo));
     },
     [dispatch]

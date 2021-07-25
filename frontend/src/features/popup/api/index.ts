@@ -1,8 +1,9 @@
 import { LoginState } from '../../login/loginSlice';
-import { API_URL } from '../../../config';
+import { API_URL, S3_URL } from '../../../config';
+import { Camera } from '../../map/types';
 
-export function fetchCount(login: LoginState, cameraID: number) {
-  return new Promise<{ count: number }>((resolve) => {
+export function fetchCameraInfo(login: LoginState, cameraID: number) {
+  return new Promise<Camera>((resolve) => {
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -13,13 +14,10 @@ export function fetchCount(login: LoginState, cameraID: number) {
     fetch(`${API_URL}/cameras/${cameraID}`, requestOptions)
       .then((response) => {
         if (response.ok) {
-          return response.json();
+          resolve(response.json());
         } else {
           throw new Error("Couldn't get count.");
         }
-      })
-      .then((data) => {
-        resolve({ count: data.image_count });
       })
       .catch((error) => console.log(error));
   });
@@ -31,7 +29,7 @@ export function putFile(login: LoginState, file: File, cameraID: number, name: s
     const formData = new FormData();
     formData.append('File', file, name);
 
-    fetch(`${API_URL}/images/${name}`, {
+    fetch(`${S3_URL}/images/${name}`, {
       method: 'PUT',
       body: formData,
     })

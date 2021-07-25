@@ -5,7 +5,7 @@ import { MAPBOX_ACCESS_TOKEN } from '../../config';
 import styles from './Map.module.css';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { popUpInfo } from '../popup/popupSlice';
+import { popUpCameraID } from '../popup/popupSlice';
 import { LoginState } from '../login/loginSlice';
 import { Camera, MapStates } from './types';
 import { NewCameraDialog } from './components/NewCameraDialog';
@@ -17,7 +17,7 @@ mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 
 interface Props {
   children: JSX.Element;
-  onCameraClick: (popUpInfo: popUpInfo) => void;
+  onCameraClick: (popUpInfo: popUpCameraID) => void;
   login: LoginState;
 }
 

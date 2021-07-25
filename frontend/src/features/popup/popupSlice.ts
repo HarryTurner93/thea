@@ -2,36 +2,24 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '../../app/store';
 
-export type popUpInfo = {
-  id: number;
-  name: string;
-  latitude: number;
-  longitude: number;
-  numImages: number;
-};
+export type popUpCameraID = number;
 
 export interface PopUpState {
   open: boolean;
-  popUpInfo: popUpInfo;
+  popUpCameraID: popUpCameraID;
 }
 
 const initialState: PopUpState = {
   open: false,
-  popUpInfo: {
-    id: 0,
-    name: '',
-    latitude: 0,
-    longitude: 0,
-    numImages: 0,
-  },
+  popUpCameraID: 0,
 };
 
 export const popupSlice = createSlice({
   name: 'popup',
   initialState,
   reducers: {
-    openPopUp: (state, action: PayloadAction<popUpInfo>) => {
-      state.popUpInfo = action.payload;
+    openPopUp: (state, action: PayloadAction<popUpCameraID>) => {
+      state.popUpCameraID = action.payload;
       state.open = true;
     },
     closePopUp: (state) => {
@@ -46,6 +34,6 @@ export const { openPopUp, closePopUp } = popupSlice.actions;
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const getPopUpStatus = (state: RootState) => state.popup.open;
-export const getPopUpInfo = (state: RootState) => state.popup.popUpInfo;
+export const getPopUpCameraID = (state: RootState) => state.popup.popUpCameraID;
 
 export default popupSlice.reducer;

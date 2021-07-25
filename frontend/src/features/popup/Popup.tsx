@@ -18,10 +18,11 @@ import { browserInfo, closeBrowser } from '../browser/browserSlice';
 import { LoginState } from '../login/loginSlice';
 import { closePopUp } from '../popup/popupSlice';
 import { SimpleLabel } from '../../components/Elements/SimpleLabel';
-import { fetchCount, putFile } from './api/index';
+import { fetchCameraInfo, putFile } from './api/index';
 
 import styles from './Popup.module.css';
-import { getPopUpInfo, getPopUpStatus } from './popupSlice';
+import { getPopUpCameraID, getPopUpStatus } from './popupSlice';
+import { Camera } from '../map/types';
 
 interface WrapperProps {
   onDeleteCamera(id: number): void;
@@ -69,7 +70,7 @@ function ConfirmDeleteDialog({ confirmDelete }: DialogProps) {
 
 const mapStateToProps = (state: RootState, wrapperProps: WrapperProps) => ({
   popUpState: getPopUpStatus(state),
-  popUpInfo: getPopUpInfo(state),
+  popUpCameraID: getPopUpCameraID(state),
   ...wrapperProps,
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
@@ -78,12 +79,25 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
 
-function Popup({ popUpState, popUpInfo, closePopUp, onDeleteCamera, onOpenBrowser, login }: Props) {
+function Popup({
+  popUpState,
+  popUpCameraID,
+  closePopUp,
+  onDeleteCamera,
+  onOpenBrowser,
+  login,
+}: Props) {
   const dispatch = useAppDispatch();
   const [files, setFiles] = useState<FileList | null>(null);
   const [uploaded, setUploaded] = useState(0);
   const [toUpload, setToUpload] = useState(0);
-  const [imageCount, setImageCount] = useState(0);
+  const [popUpInfo, setPopUpInfo] = useState<Camera>({
+    id: 0,
+    name: '',
+    latitude: 0,
+    longitude: 0,
+    image_count: 0,
+  });
 
   // On Open, Close Browser
   // This effect listens for changes in popUpState, and triggers when it's open, therefore
@@ -106,23 +120,26 @@ function Popup({ popUpState, popUpInfo, closePopUp, onDeleteCamera, onOpenBrowse
         if (result !== null) {
           const uuid_name = v4().toString() + result[0].toString();
 
-          putFile(login, files[i], popUpInfo.id, uuid_name).then(() =>
+          putFile(login, files[i], popUpCameraID, uuid_name).then(() =>
             setUploaded((uploaded) => uploaded + 1)
           );
         }
       }
-      setImageCount(files.length);
+      setPopUpInfo((prevState) => {
+        return { ...prevState, image_count: files.length };
+      });
     }
-  }, [login, files, popUpInfo]);
+  }, [login, files, popUpCameraID]);
 
-  // Grab Counts
-  // Todo: Make this grab all camera data so that map doesn't push popUpInfo?
+  // Grab Camera Info
+  // This uses the ID in state to fetch the camera data from the backend and populate that
+  // UI.
   useEffect(() => {
     // If popUpInfo.id is 0 then it's not initialised yet.
-    if (popUpInfo.id === 0) return;
+    if (popUpCameraID === 0) return;
 
-    fetchCount(login, popUpInfo.id).then((data) => setImageCount(data.count));
-  }, [login, popUpInfo, files]);
+    fetchCameraInfo(login, popUpCameraID).then((data) => setPopUpInfo(data));
+  }, [login, popUpCameraID, files]);
 
   return (
     <div>
@@ -138,7 +155,7 @@ function Popup({ popUpState, popUpInfo, closePopUp, onDeleteCamera, onOpenBrowse
             <div className={styles.body}>
               <SimpleLabel label="Latitude" value={popUpInfo.latitude.toString()} />
               <SimpleLabel label="Longitude" value={popUpInfo.longitude.toString()} />
-              <SimpleLabel label="Images" value={imageCount} />
+              <SimpleLabel label="Images" value={popUpInfo.image_count.toString()} />
             </div>
             <div className={styles.body}>
               <h3>Upload images to this camera</h3>
@@ -176,7 +193,7 @@ function Popup({ popUpState, popUpInfo, closePopUp, onDeleteCamera, onOpenBrowse
               <ConfirmDeleteDialog
                 confirmDelete={() => {
                   closePopUp();
-                  onDeleteCamera(popUpInfo.id);
+                  onDeleteCamera(popUpCameraID);
                 }}
               />
               <Button
@@ -184,11 +201,11 @@ function Popup({ popUpState, popUpInfo, closePopUp, onDeleteCamera, onOpenBrowse
                 marginRight={16}
                 intent="none"
                 iconBefore={MediaIcon}
-                disabled={imageCount === 0}
+                disabled={popUpInfo.image_count === 0}
                 onClick={() => {
                   closePopUp();
                   onOpenBrowser({
-                    id: popUpInfo.id,
+                    id: popUpCameraID,
                     name: popUpInfo.name,
                   });
                 }}
