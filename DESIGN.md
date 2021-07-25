@@ -1,5 +1,6 @@
 # Software Design Document
 <i>This design document adheres to [IEEE 1016-2009](https://standards.ieee.org/standard/1016-2009.html)</i></br>
+<i>All UML diagrams are created with [Plant UML](https://plantuml.com/)</i><br>
 <b>Issued:</b> <i>2nd July 2021</i></br>
 <b>Author:</b> <i>Harry Turner</i></br>
 
@@ -54,6 +55,19 @@ This viewpoint addresses the main components in the system. It's modelled with a
  - React and Redux were chosen as industry standard powerful UI frameworks for frontend applications. There is good support for map based views.
  - FastAPI and Celery were chosen for the ML server so that computation heavy tasks can be taken out of the HTTP Request/Response cycle and offloaded onto worker nodes. These workers will carry out image processing tasks and stick the results into the database, they don't need to respond to the client making this is a natural architectural choice.
  - RabbitMQ is a reasonable choice of message queue that is opensource and plays nicely with Celery.
+
+## Image Upload 
+This viewpoint explains how the components interact when a user uploads an image. It is modelled with a UML Sequence Diagram.
+![Sequence Diagram](http://www.plantuml.com/plantuml/png/VP71JiCm38RlUOeSuR0Nw66Q14SGXnquLbvhZK2MLh4BsjjZrDIP4U6okVRlpx-T0p5aNYxHmS1JzWynO68FL28tIpaCOGR9lkA9C7zYbdhzC9BdfwCgjjYDm702GlzoUiU1Zp88pYWIcwYwnoq0qjWvLypjzdLuvy_8_PoHmZdXs2yvtjsxQdGduhMjyqPrGxCkHBTm7ouI2icK34rWyvG86xOKqaijyDMwskjQdIU1us_jLhPK7MfOUkZEGu9ufK9h7a8fM-EVHuXHCQfh3bDLOpqPkKGckrbbgQLwJ7Nx1O6RJxyELtpZoBfEupqiTdZ3uMD3oZ-CFsg8x5T0A4ddQzUjuTBfC1AMbZJn_prLW6bq1_bPBl4R)
+
+## Design Decisions
+ - Map behind everything. Nice effect.
+ - List/Retrieve serializers for camera. 
+
+## Front End Components
+#### Map
+Map component, when the token changes it fetches a list of cameras and displays them. BEcause these are markers it creates special objects to track them all and doesn't add cameras already in the list. 
+
 
 ## Todo
 ML Models, Datasets, Training Experiments and Results.
