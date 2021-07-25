@@ -1,6 +1,6 @@
 // A mock function to mimic making an async request for data
 import { LoginState } from '../../login/loginSlice';
-import { ImageInfo } from '../types';
+import { Image } from '../types';
 
 export function getImages(
   login: LoginState,
@@ -8,7 +8,7 @@ export function getImages(
   page: number,
   orderBy: string | number | boolean
 ) {
-  return new Promise<{ pages: number; images: ImageInfo[] }>((resolve) => {
+  return new Promise<{ pages: number; images: Image[] }>((resolve) => {
     // Try and create camera in backend.
     const requestOptions = {
       method: 'GET',

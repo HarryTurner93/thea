@@ -1,4 +1,4 @@
-export type ImageInfo = {
+export type Image = {
   object_key: string;
   fox: number;
   badger: number;

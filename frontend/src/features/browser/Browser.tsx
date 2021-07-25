@@ -5,18 +5,14 @@ import { connect, ConnectedProps } from 'react-redux';
 import { AppDispatch, RootState } from '../../app/store';
 import { closeBrowser } from '../browser/browserSlice';
 import { LoginState } from '../login/loginSlice';
-import { SimpleLabel } from '../../components/Elements/SimpleLabel';
 
+import { Tile } from './components/Tile';
 import styles from './Browser.module.css';
 import { getBrowserInfo, getBrowserStatus } from './browserSlice';
-import { ImageInfo } from './types';
+import { Image } from './types';
 import { getImages } from './api';
 
-type WrapperState = {
-  login: LoginState;
-};
-
-const mapStateToProps = (state: RootState, wrapperState: WrapperState) => ({
+const mapStateToProps = (state: RootState, wrapperState: { login: LoginState }) => ({
   browserState: getBrowserStatus(state),
   browserInfo: getBrowserInfo(state),
   ...wrapperState,
@@ -27,39 +23,6 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
 
-interface ImageProps {
-  imageData: {
-    object_key: string;
-    badger: number;
-    cat: number;
-    fox: number;
-  };
-}
-
-function Image({ imageData }: ImageProps) {
-  return (
-    <div className={styles.imageContainer}>
-      <img
-        style={{ width: '300px', height: '200px' }}
-        // Todo: Is this a pattern that has a short version?
-        alt={imageData ? imageData.object_key : 'Placeholder'}
-        src={
-          imageData
-            ? `http://localstack:4566/images/${imageData.object_key}`
-            : 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640'
-        }
-      />
-      {imageData ? (
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <SimpleLabel label="Fox" value={`${Math.round(imageData.fox * 100)}%`} />
-          <SimpleLabel label="Badger" value={`${Math.round(imageData.badger * 100)}%`} />
-          <SimpleLabel label="Cat" value={`${Math.round(imageData.cat * 100)}%`} />
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
 function Browser({ browserState, browserInfo, closeBrowser, login }: Props) {
   const [options] = React.useState([
     { label: 'Fox', value: 'fox' },
@@ -67,7 +30,7 @@ function Browser({ browserState, browserInfo, closeBrowser, login }: Props) {
     { label: 'Cat', value: 'cat' },
   ]);
   const [ordering, setOrdering] = React.useState<string | number | boolean>('fox');
-  const [images, setImages] = React.useState<ImageInfo[]>([]);
+  const [images, setImages] = React.useState<Image[]>([]);
   const [totalPages, setTotalPages] = React.useState(1);
   const [page, setPage] = React.useState(1);
 
@@ -121,14 +84,14 @@ function Browser({ browserState, browserInfo, closeBrowser, login }: Props) {
               {images.length !== 0 ? (
                 <div className={styles.columnContainer}>
                   <div className={styles.rowContainer}>
-                    <Image imageData={images[0]} />
-                    <Image imageData={images[1]} />
-                    <Image imageData={images[2]} />
+                    <Tile image={images[0]} />
+                    <Tile image={images[1]} />
+                    <Tile image={images[2]} />
                   </div>
                   <div className={styles.rowContainer}>
-                    <Image imageData={images[3]} />
-                    <Image imageData={images[4]} />
-                    <Image imageData={images[5]} />
+                    <Tile image={images[3]} />
+                    <Tile image={images[4]} />
+                    <Tile image={images[5]} />
                   </div>
                 </div>
               ) : (
