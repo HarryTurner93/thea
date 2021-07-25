@@ -42,19 +42,6 @@
   padding: 0px 20px 0px;
   display: flex;
 }
-.labelContainer {
-  display: flex;
-  flex-direction: row;
-  padding: 0px 0px 10px 0px;
-  font-size: 14px;
-}
-.labelKey {
-  color: #95a3b3;
-  margin-right: 10px;
-}
-.labelValue {
-  color: #222222;
-}
 p {
   margin-top: 0px;
   margin-bottom: 0px;

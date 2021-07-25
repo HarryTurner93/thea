@@ -17,32 +17,15 @@ import { AppDispatch, RootState } from '../../app/store';
 import { browserInfo, closeBrowser } from '../browser/browserSlice';
 import { LoginState } from '../login/loginSlice';
 import { closePopUp } from '../popup/popupSlice';
+import { SimpleLabel } from '../../components/Elements/SimpleLabel';
 
 import styles from './Popup.module.css';
 import { getPopUpInfo, getPopUpStatus } from './popupSlice';
-
-interface labelProps {
-  label: string;
-  value: string | number;
-}
 
 interface WrapperProps {
   onDeleteCamera(id: number): void;
   onOpenBrowser(browserInfo: browserInfo): void;
   login: LoginState;
-}
-
-export function SimpleLabel(props: labelProps) {
-  return (
-    <div className={styles.labelContainer}>
-      <div className={styles.labelKey}>
-        <p>{props.label}</p>
-      </div>
-      <div className={styles.labelValue}>
-        <p data-name={`label-${props.label}`}>{props.value}</p>
-      </div>
-    </div>
-  );
 }
 
 interface DialogProps {

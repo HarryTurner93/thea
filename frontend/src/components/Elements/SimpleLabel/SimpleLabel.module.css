@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 0px 0px 10px 0px;
+  font-size: 14px;
+}
+.key {
+  color: #95a3b3;
+  margin-right: 10px;
+}
+.value {
+  color: #222222;
+}

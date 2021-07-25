@@ -5,7 +5,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { AppDispatch, RootState } from '../../app/store';
 import { closeBrowser } from '../browser/browserSlice';
 import { LoginState } from '../login/loginSlice';
-import { SimpleLabel } from '../popup/Popup';
+import { SimpleLabel } from '../../components/Elements/SimpleLabel';
 
 import styles from './Browser.module.css';
 import { getBrowserInfo, getBrowserStatus } from './browserSlice';

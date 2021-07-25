@@ -60,6 +60,7 @@ module.exports = {
         'import/no-duplicates': 'off',
         'import/namespace': 'off',
         'import/order': 'off',
+        'import/export': 'off',
 
         'react/react-in-jsx-scope': 'off',
 
