@@ -1,6 +1,7 @@
 // A mock function to mimic making an async request for data
 import { LoginState } from '../../login/loginSlice';
 import { Image } from '../types';
+import { API_URL } from '../../../config';
 
 export function getImages(
   login: LoginState,
@@ -19,7 +20,7 @@ export function getImages(
     };
 
     fetch(
-      `http://localhost:8000/web/images/?camera_id=${cameraID}&page=${page}&ordering=-${orderBy}`,
+      `${API_URL}/images/?camera_id=${cameraID}&page=${page}&ordering=-${orderBy}`,
       requestOptions
     )
       .then((response) => {

@@ -1,4 +1,5 @@
 import { LoginState } from '../../login/loginSlice';
+import { API_URL } from '../../../config';
 
 export function fetchCount(login: LoginState, cameraID: number) {
   return new Promise<{ count: number }>((resolve) => {
@@ -9,7 +10,7 @@ export function fetchCount(login: LoginState, cameraID: number) {
         Authorization: `Token ${login.token}`,
       },
     };
-    fetch(`http://localhost:8000/web/cameras/${cameraID}`, requestOptions)
+    fetch(`${API_URL}/cameras/${cameraID}`, requestOptions)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -30,7 +31,7 @@ export function putFile(login: LoginState, file: File, cameraID: number, name: s
     const formData = new FormData();
     formData.append('File', file, name);
 
-    fetch(`http://localstack:4566/images/${name}`, {
+    fetch(`${API_URL}/images/${name}`, {
       method: 'PUT',
       body: formData,
     })

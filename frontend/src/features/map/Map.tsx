@@ -1,101 +1,23 @@
-import { Pane, Dialog, TextInputField } from 'evergreen-ui';
 import mapboxgl from 'mapbox-gl';
 import React, { useRef, useEffect, useState, useImperativeHandle, useCallback } from 'react';
+import { MAPBOX_ACCESS_TOKEN } from '../../config';
 
 import styles from './Map.module.css';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { popUpInfo } from '../popup/popupSlice';
 import { LoginState } from '../login/loginSlice';
+import { Camera, MapStates } from './types';
+import { NewCameraDialog } from './components/NewCameraDialog';
+import { makeMarker } from './utils';
 
-// Todo: Move this to environmen variable.
-mapboxgl.accessToken =
-  'pk.eyJ1IjoiaHR1cm5lcjMwIiwiYSI6ImNrNjI5ZHloMTBhcjYzb3BlMnVpOG80bmwifQ.eKnvR1lWydBWdG6VX7VEKA';
-
-function makeMarker(
-  map: mapboxgl.Map,
-  id: number,
-  name: string,
-  longitude: number,
-  latitude: number,
-  numImages: number,
-  callback: (popUpInfo: popUpInfo) => void
-) {
-  const el = document.createElement('div');
-  el.className = styles.marker;
-  el.id = name;
-  el.style.backgroundImage =
-    'url(https://img.icons8.com/material-two-tone/48/000000/apple-camera.png)';
-  el.onclick = () => {
-    callback({
-      id: id,
-      name: name,
-      latitude: latitude,
-      longitude: longitude,
-      numImages: numImages,
-    });
-  };
-
-  const marker = new mapboxgl.Marker(el, { offset: [0, -50 / 2] })
-    .setLngLat([longitude, latitude])
-    .addTo(map);
-  return marker;
-}
+// Setup Mapbox.
+mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 
 interface Props {
   children: JSX.Element;
   onCameraClick: (popUpInfo: popUpInfo) => void;
   login: LoginState;
-}
-
-interface Camera {
-  id: number;
-  name: string;
-  longitude: number;
-  latitude: number;
-  image_count: number;
-  marker: mapboxgl.Marker;
-}
-
-// This defines the state machine for the Map.
-// Viewing is normal mode, AddingCamera means it's waiting for a click to say
-// where the new cameras is going to be.
-enum MapStates {
-  Viewing,
-  AddingCamera,
-  NamingCamera,
-}
-
-interface DialogProps {
-  isShown: boolean;
-  closeCallback(): void;
-  confirmCallback(name: string): void;
-}
-
-function EnterCameraName({ isShown, closeCallback, confirmCallback }: DialogProps) {
-  const [name, setName] = useState('');
-  return (
-    <Pane>
-      <Dialog
-        isShown={isShown}
-        title="Give it a name."
-        confirmLabel="Confirm Name"
-        data-name="camera-dialog-submit"
-        onCloseComplete={() => closeCallback()}
-        onConfirm={() => {
-          confirmCallback(name);
-        }}
-      >
-        <TextInputField
-          label="Camera Name"
-          data-name="enter-camera-name"
-          required
-          value={name}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => setName(e.currentTarget.value)}
-        />
-      </Dialog>
-    </Pane>
-  );
 }
 
 export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, ref) => {
@@ -352,7 +274,7 @@ export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, 
         }
       >
         {children}
-        <EnterCameraName
+        <NewCameraDialog
           isShown={mapState === MapStates.NamingCamera}
           closeCallback={handleDialogCancel}
           confirmCallback={handleDialogConfirm}

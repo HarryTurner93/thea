@@ -1,3 +1,5 @@
+import { API_URL } from '../../../config';
+
 export function login(username: string, password: string) {
   return new Promise<{ error: null | string; token: string; id: number }>((resolve) => {
     // Attempt to login.
@@ -10,7 +12,7 @@ export function login(username: string, password: string) {
       }),
     };
 
-    fetch('http://localhost:8000/web/api-token-auth/', requestOptions)
+    fetch(`${API_URL}/api-token-auth/`, requestOptions)
       .then((response) => {
         if (response.ok) {
           return response.json();
