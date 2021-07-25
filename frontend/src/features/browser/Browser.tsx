@@ -9,17 +9,11 @@ import { SimpleLabel } from '../../components/Elements/SimpleLabel';
 
 import styles from './Browser.module.css';
 import { getBrowserInfo, getBrowserStatus } from './browserSlice';
+import { ImageInfo } from './types';
+import { getImages } from './api';
 
 type WrapperState = {
   login: LoginState;
-};
-
-type ImageInfo = {
-  object_key: string;
-  fox: number;
-  badger: number;
-  cat: number;
-  camera: number;
 };
 
 const mapStateToProps = (state: RootState, wrapperState: WrapperState) => ({
@@ -90,31 +84,10 @@ function Browser({ browserState, browserInfo, closeBrowser, login }: Props) {
       // Exit early if id is the default.
       if (browserInfo.id === 0) return;
 
-      // Try and create camera in backend.
-      const requestOptions = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Token ${login.token}`,
-        },
-      };
-
-      fetch(
-        `http://localhost:8000/web/images/?camera_id=${browserInfo.id}&page=${page}&ordering=-${ordering}`,
-        requestOptions
-      )
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Couldn't post camera.");
-          }
-        })
-        .then((data) => {
-          setTotalPages(Math.ceil(data.count / 6));
-          setImages(data.results);
-        })
-        .catch((error) => console.log(error));
+      getImages(login, browserInfo.id, page, ordering).then((data) => {
+        setTotalPages(data.pages);
+        setImages(data.images);
+      });
     }
   }, [page, browserState, browserInfo, login, ordering]);
 
