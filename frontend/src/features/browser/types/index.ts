@@ -4,4 +4,5 @@ export type Image = {
   badger: number;
   cat: number;
   camera: number;
+  waiting: boolean;
 };

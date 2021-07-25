@@ -11,7 +11,6 @@ import styles from './Browser.module.css';
 import { getBrowserInfo, getBrowserStatus } from './browserSlice';
 import { Image } from './types';
 import { getImages } from './api';
-import { noScores } from './utils';
 
 const mapStateToProps = (state: RootState, wrapperState: { login: LoginState }) => ({
   browserState: getBrowserStatus(state),
@@ -60,8 +59,7 @@ function Browser({ browserState, browserInfo, closeBrowser, login }: Props) {
   // This runs every 5 seconds.
   useEffect(() => {
     const interval = setInterval(() => {
-      if (images.map((image) => noScores(image)).some((element) => element)) {
-        console.log('Updating..');
+      if (images.map((image) => image.waiting).some((element) => element)) {
         getImages(login, browserInfo.id, page, ordering).then((data) => {
           setTotalPages(data.pages);
           setImages(data.images);
@@ -101,14 +99,14 @@ function Browser({ browserState, browserInfo, closeBrowser, login }: Props) {
               {images.length !== 0 ? (
                 <div className={styles.columnContainer}>
                   <div className={styles.rowContainer}>
-                    <Tile image={images[0]} waiting={noScores(images[0])} />
-                    <Tile image={images[1]} waiting={noScores(images[1])} />
-                    <Tile image={images[2]} waiting={noScores(images[2])} />
+                    <Tile image={images[0]} />
+                    <Tile image={images[1]} />
+                    <Tile image={images[2]} />
                   </div>
                   <div className={styles.rowContainer}>
-                    <Tile image={images[3]} waiting={noScores(images[3])} />
-                    <Tile image={images[4]} waiting={noScores(images[4])} />
-                    <Tile image={images[5]} waiting={noScores(images[5])} />
+                    <Tile image={images[3]} />
+                    <Tile image={images[4]} />
+                    <Tile image={images[5]} />
                   </div>
                 </div>
               ) : (

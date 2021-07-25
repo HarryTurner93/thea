@@ -6,10 +6,9 @@ import styles from './Tile.module.css';
 
 interface TileProps {
   image: Image;
-  waiting: boolean;
 }
 
-export function Tile({ image, waiting }: TileProps) {
+export function Tile({ image }: TileProps) {
   return (
     <div className={styles.container}>
       <img
@@ -22,7 +21,7 @@ export function Tile({ image, waiting }: TileProps) {
         }
       />
       {image ? (
-        waiting ? (
+        image.waiting ? (
           <div className={styles.tightLabelContainer}>
             <h3>Waiting for results...</h3>
             <Spinner marginLeft={16} size={16} />

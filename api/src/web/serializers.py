@@ -8,9 +8,14 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email']
 
 class ImageSerializer(serializers.ModelSerializer):
+    waiting = serializers.SerializerMethodField()
+
     class Meta:
         model = Image
         fields = '__all__'
+
+    def get_waiting(self, obj):
+        return any([obj.fox == 0, obj.badger == 0, obj.cat == 0])
 
 class CameraSerializer(serializers.ModelSerializer):
     image_count = serializers.SerializerMethodField()
