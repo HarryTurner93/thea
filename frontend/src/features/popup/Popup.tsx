@@ -18,7 +18,7 @@ import { browserInfo, closeBrowser } from '../browser/browserSlice';
 import { LoginState } from '../login/loginSlice';
 import { closePopUp } from '../popup/popupSlice';
 import { SimpleLabel } from '../../components/Elements/SimpleLabel';
-import { fetchCount } from './api/index';
+import { fetchCount, putFile } from './api/index';
 
 import styles from './Popup.module.css';
 import { getPopUpInfo, getPopUpStatus } from './popupSlice';
@@ -106,47 +106,9 @@ function Popup({ popUpState, popUpInfo, closePopUp, onDeleteCamera, onOpenBrowse
         if (result !== null) {
           const uuid_name = v4().toString() + result[0].toString();
 
-          // Post data.
-          const formData = new FormData();
-          formData.append('File', files[i], uuid_name);
-
-          fetch(`http://localstack:4566/images/${uuid_name}`, {
-            method: 'PUT',
-            body: formData,
-          })
-            .then((response) => {
-              if (response.ok) {
-                return response.text();
-              } else {
-                throw new Error("Couldn't get presigned URL.");
-              }
-            })
-            .then(() => {
-              // Try and create camera in backend.
-              const requestOptions = {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Token ${login.token}`,
-                },
-                body: JSON.stringify({
-                  object_key: uuid_name,
-                  camera: popUpInfo.id,
-                }),
-              };
-
-              fetch('http://localhost:8000/web/images/', requestOptions)
-                .then((response) => {
-                  if (response.ok) {
-                    return response.json();
-                  } else {
-                    throw new Error("Couldn't post camera.");
-                  }
-                })
-                .then(() => setUploaded((uploaded) => uploaded + 1))
-                .catch((error) => console.log(error));
-            })
-            .catch((error) => console.log(error));
+          putFile(login, files[i], popUpInfo.id, uuid_name).then(() =>
+            setUploaded((uploaded) => uploaded + 1)
+          );
         }
       }
       setImageCount(files.length);
