@@ -6,6 +6,7 @@ import { AppDispatch } from '../../app/store';
 
 import styles from './Login.module.css';
 import { LoginState, setLogin } from './loginSlice';
+import { login } from './api';
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
   setLogin: (token: LoginState) => dispatch(setLogin(token)),
@@ -23,31 +24,9 @@ function Login({ setLogin }: Props) {
     setErrorMessage('');
 
     // Attempt to login.
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    };
-    // Todo: Move this to environment variable.
-    fetch('http://localhost:8000/web/api-token-auth/', requestOptions)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Invalid credentials.');
-        }
-      })
-      .then((data) => setLogin({ token: data.token, id: data.id }))
-
-      // Catch errors.
-      // Replace 'Failed to fetch' with more meaningful message.
-      .catch((error) => {
-        const message = error.message === 'Failed to fetch' ? 'Server unreachable.' : error.message;
-        setErrorMessage(message);
-      });
+    login(username, password).then((data) => {
+      data.error ? setErrorMessage(data.error) : setLogin({ token: data.token, id: data.id });
+    });
   }, [setErrorMessage, setLogin, username, password]);
 
   return (
@@ -86,5 +65,4 @@ function Login({ setLogin }: Props) {
     </div>
   );
 }
-
 export default connector(Login);
