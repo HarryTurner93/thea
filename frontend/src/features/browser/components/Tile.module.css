@@ -8,4 +8,10 @@
 .labelContainer {
   display: flex;
   justify-content: space-around;
+  align-items: center;
+}
+.tightLabelContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

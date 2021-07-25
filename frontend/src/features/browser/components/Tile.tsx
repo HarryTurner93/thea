@@ -1,13 +1,15 @@
 import { SimpleLabel } from '../../../components/Elements/SimpleLabel';
+import { Spinner } from 'evergreen-ui';
 import React from 'react';
 import { Image } from '../types';
 import styles from './Tile.module.css';
 
 interface TileProps {
   image: Image;
+  waiting: boolean;
 }
 
-export function Tile({ image }: TileProps) {
+export function Tile({ image, waiting }: TileProps) {
   return (
     <div className={styles.container}>
       <img
@@ -20,11 +22,18 @@ export function Tile({ image }: TileProps) {
         }
       />
       {image ? (
-        <div className={styles.labelContainer}>
-          <SimpleLabel label="Fox" value={`${Math.round(image.fox * 100)}%`} />
-          <SimpleLabel label="Badger" value={`${Math.round(image.badger * 100)}%`} />
-          <SimpleLabel label="Cat" value={`${Math.round(image.cat * 100)}%`} />
-        </div>
+        waiting ? (
+          <div className={styles.tightLabelContainer}>
+            <h3>Waiting for results...</h3>
+            <Spinner marginLeft={16} size={16} />
+          </div>
+        ) : (
+          <div className={styles.labelContainer}>
+            <SimpleLabel label="Fox" value={`${Math.round(image.fox * 100)}%`} />
+            <SimpleLabel label="Badger" value={`${Math.round(image.badger * 100)}%`} />
+            <SimpleLabel label="Cat" value={`${Math.round(image.cat * 100)}%`} />
+          </div>
+        )
       ) : null}
     </div>
   );
