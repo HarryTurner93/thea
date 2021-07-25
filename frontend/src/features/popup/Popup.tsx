@@ -18,6 +18,7 @@ import { browserInfo, closeBrowser } from '../browser/browserSlice';
 import { LoginState } from '../login/loginSlice';
 import { closePopUp } from '../popup/popupSlice';
 import { SimpleLabel } from '../../components/Elements/SimpleLabel';
+import { fetchCount } from './api/index';
 
 import styles from './Popup.module.css';
 import { getPopUpInfo, getPopUpStatus } from './popupSlice';
@@ -158,26 +159,7 @@ function Popup({ popUpState, popUpInfo, closePopUp, onDeleteCamera, onOpenBrowse
     // If popUpInfo.id is 0 then it's not initialised yet.
     if (popUpInfo.id === 0) return;
 
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Token ${login.token}`,
-      },
-    };
-
-    fetch(`http://localhost:8000/web/cameras/${popUpInfo.id}`, requestOptions)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Couldn't get count.");
-        }
-      })
-      .then((data) => {
-        setImageCount(data.image_count);
-      })
-      .catch((error) => console.log(error));
+    fetchCount(login, popUpInfo.id).then((data) => setImageCount(data.count));
   }, [login, popUpInfo, files]);
 
   return (
