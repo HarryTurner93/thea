@@ -64,6 +64,12 @@ This viewpoint explains how the components interact when a user uploads an image
  - Map behind everything. Nice effect.
  - List/Retrieve serializers for camera. 
 
+## Front End Mocks
+I created these mockups as a guide to building the UI, the details are slightly different as I used the Evergreen UI component library. There are also other screens such as dialogs that aren't included here. I mocked these up as a rough idea of what I wanted to do, then filled in the gaps whilst coding the front end. A small project like this didn't require complete and accurate mockups up front, but just enough so I knew what features I'd need to build.
+
+![Camera Dialog](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/mock_1.png)
+![Browser](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/mock_2.png)
+
 ## Front End Components
 #### Map
 Map component, when the token changes it fetches a list of cameras and displays them. BEcause these are markers it creates special objects to track them all and doesn't add cameras already in the list. 
