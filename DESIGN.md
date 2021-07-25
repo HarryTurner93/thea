@@ -80,8 +80,9 @@ I designed it as a component that wraps other components, that is, it accepts a 
 
 The map is not connected to any global state, it exposes two functions as externally callable functions. The way I achieved this was to make the map a reference value in the parent App, which can then use the reference to call the functions. I don't know whether this is good or bad practice, but it allowed me to expose two methods to the rest of the application to allow it manipulate the map and the cameras. The two methods are addCamera and deleteCamera respectively. deleteCamera makes the necessary call to the server and removes the camera from the internal state. addCamera triggers the next state in a state machine that then asks a user for a click on the map, followed by a dialog asking for a name, followed finally by the call to the server to create the camera then adding the resulting camera to the internal state.
 
-Map component, when the token changes it fetches a list of cameras and displays them. BEcause these are markers it creates special objects to track them all and doesn't add cameras already in the list. 
+![Map State Machine](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/camera_state_machine.png)
 
+Finally, the map takes a prop called onCameraClick, and adds this to each camera displayed on the map as a callback that is called whenever that camera is clicked, passing it's ID as an argument. This is how the map component calls out to the rest of the application upon user interaction.
 
 ## Todo
 ML Models, Datasets, Training Experiments and Results.
