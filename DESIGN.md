@@ -125,6 +125,27 @@ Upon submit, the components attempts to login on the backend by receiving a toke
 
 ![Login](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/login.png)
 
+## Improvements
+
+#### Security
+Most improvements are around security, partly because implementing them at the time was taking too much effort to get working and wasn't what I wanted to focus on in this project, so I deliberately skipped some best security practices and instead highlight them here.
+
+**Public Image URLs** All images are accessible on the public S3 endpoint, whereas in reality I would generate presigned URLs. I did this because making presigned URLs work with localstack is a) complicated, and b) not the same as S3! It's actually much easier to generate presigned URLs when using the real S3 and I didn't want to waste time making it work for the development stack. To implement this, the FE would need to make another call to the BE to get the presigned URLs or have them returned in the image objects themselves.
+
+**File Name Generation** The client generates filenames, puts them in S3 and then tells the backend about them. This means the BE has less control. Ideally, I'd introduce another call to the backend to request the ability to upload an image. The BE would then generate the name, and also the presigned POST URL, and the client would use that instead.
+
+**Input Validation** There is no input validation anywhere in the system, which is lazy of me, but would also complicate things for this demo project. Specifically, the frontend happily uploads whatever files it wants to the backend (granted these aren't executed anywhere, but still..) It also lets the user enter names for cameras which are then sent straight to the server with no validation etc. Not best practice.
+
+#### Invalid
+
+**Images per Page Fixed** There are six images displayed in the browser, and this number is actually fixed in multiple places. It's defined in the pagination settings in the BE which always returns 6, and it's used to compute the number pages from the returned count. Not ideal but it works.
+
+#### Aesthetic
+
+**Images Get Squashed** What is says really, it just packs 6 images into a grid on the screen with a fixed size to make the UI work. There's no attempt to handle varying image size. I skipped this because it's an uninteresting detail.
+
 ## Todo
 ML Models, Datasets, Training Experiments and Results.
 UI Wireframes.
+
+
