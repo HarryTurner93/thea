@@ -79,6 +79,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type Props = ConnectedProps<typeof connector>;
 
+// Todo: This page needs updating. Can remove popUpState I think, and moe Dialog to a sub component.
 function Popup({
   popUpState,
   popUpCameraID,

@@ -83,7 +83,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api.wsgi.application'
 
-
+# Todo: Must switch to postgres.
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 

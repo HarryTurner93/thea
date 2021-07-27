@@ -57,7 +57,7 @@ export function deleteCamera(login: LoginState, cameraID: number) {
         Authorization: `Token ${login.token}`,
       },
     };
-    fetch(`http://localhost:8000/web/cameras/${cameraID}`, requestOptions)
+    fetch(`${API_URL}/cameras/${cameraID}`, requestOptions)
       .then((response) => {
         if (response.ok) {
           resolve();

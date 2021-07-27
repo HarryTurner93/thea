@@ -54,7 +54,7 @@ export function putFile(login: LoginState, file: File, cameraID: number, name: s
           }),
         };
 
-        fetch('http://localhost:8000/web/images/', requestOptions)
+        fetch(`${API_URL}/images/`, requestOptions)
           .then((response) => {
             if (response.ok) {
               return response.json();
