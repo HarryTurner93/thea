@@ -89,7 +89,14 @@ Finally, the map takes a prop called onCameraClick, and adds this to each camera
 #### PopUp
 The PopUp component is an information pane rendered on top of the map that has a piece of state identifying the camera_id. It's purpose is to display information about a camera, and handle file uploads to a camera. 
 
-The external interface to the rest of the system is two fold. First, two callbacks pass in via props, one that is called when the Delete Camera button is pressed, and it handles calling the Map to delete the requested camera. The other is the Open Browser button which handles opening the browser. The PopUp is triggered by a change in it's camera ID state, which any part of the system can update by pushing a new ID to it. Upon any change in the camera ID state, the PopUp polls the backend for the information on that camera. 
+The external interface to the rest of the system is two fold. First, two callbacks pass in via props, one that is called when the Delete Camera button is pressed, and it handles calling the Map to delete the requested camera. The other is the Open Browser button which handles opening the browser. The PopUp is triggered by a change in it's camera ID state, which any part of the system can update by pushing a new ID to it. Upon any change in the camera ID state, the PopUp polls the backend for the information on that camera and updates the UI.
+
+Finally the upload files feature lets a user select multiple files from their machine and then uploads these to the system by generating a random name, uploading the renamed file to S3, and then registering that file with the system by POSTing a new image.
+
+#### Browser
+The browser component is similar to the PopUp in that it's permanently rendered on top of the map, but only visible when it's open state is true, which is triggered by clicking the Open Browser button on the PopUp. This also updates the camera ID state of the browser which then pulls in a page of images from the backend to display.
+
+The browser displays two components that control the images, the first is the pagination which is is simply a page number, the other is a set of three buttons, Badger, Fox, and Cat. Selecting either of those will request the backend to sort by the highest score for that animal and return the images in that order, the page number determines the pagination. This is a simple design that works seamlessly with the filtering and pagination supported by Django.
 
 ## Todo
 ML Models, Datasets, Training Experiments and Results.
