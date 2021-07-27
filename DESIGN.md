@@ -71,9 +71,32 @@ I created these mockups as a guide to building the UI, the details are slightly 
 ![Browser](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/mock_2.png)
 
 ## Front End Components
-#### Map
-Map component, when the token changes it fetches a list of cameras and displays them. BEcause these are markers it creates special objects to track them all and doesn't add cameras already in the list. 
+Philosophy. Not particularly experienced building React apps. Previous experiences result in a tangled mess. This time I'm trying to keep things modular with less coupling and stronger boundaries.
 
+#### Map
+The map component is responsible for showing a browseable map and displaying the cameras in the right locations as icons. It also manages the cameras by handling the add/delete logic, including the necessary calls to the server. I designed it this way because I felt the cameras were inseparable to the map, it also made it easier because of the way icons are handled in mapbox. Speaking of which, I use mapbox to actually display the map.<br>
+
+I designed it as a component that wraps other components, that is, it accepts a 'children' prop which it then renders appropriately. This made it fairly easy to overlay components onto the map without having to worry about the CSS styles on the children component. This was achieved by the map component having two layers, the map layer and then an overlay layer with appropriate CSS styles. All children are rendered on this layer, and appear on top of the map.<br>
+
+The map is not connected to any global state, it exposes two functions as externally callable functions. The way I achieved this was to make the map a reference value in the parent App, which can then use the reference to call the functions. I don't know whether this is good or bad practice, but it allowed me to expose two methods to the rest of the application to allow it manipulate the map and the cameras. The two methods are addCamera and deleteCamera respectively. deleteCamera makes the necessary call to the server and removes the camera from the internal state. addCamera triggers the next state in a state machine, described next.
+
+Adding a camera requires moving through several steps, which I manage with a state machine. The first state is normal operation, where the map is navigable and cameras can be clicked on. The addCamera function triggers a move to the next state which waits for the user to click on the map, this transitions to a state that displays a dialog asking for a name, upon confirmation the map transitions to the final state which creates the camera by calling the server and adding the resulting camera to the internal state. The state automatically transitions back to the viewing state when completed.
+
+![Map State Machine](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/camera_state_machine.png)
+
+Finally, the map takes a prop called onCameraClick, and adds this to each camera displayed on the map as a callback that is called whenever that camera is clicked, passing it's ID as an argument. This is how the map component calls out to the rest of the application upon user interaction.
+
+#### PopUp
+The PopUp component is an information pane rendered on top of the map that has a piece of state identifying the camera_id. It's purpose is to display information about a camera, and handle file uploads to a camera. 
+
+The external interface to the rest of the system is two fold. First, two callbacks pass in via props, one that is called when the Delete Camera button is pressed, and it handles calling the Map to delete the requested camera. The other is the Open Browser button which handles opening the browser. The PopUp is triggered by a change in it's camera ID state, which any part of the system can update by pushing a new ID to it. Upon any change in the camera ID state, the PopUp polls the backend for the information on that camera and updates the UI.
+
+Finally the upload files feature lets a user select multiple files from their machine and then uploads these to the system by generating a random name, uploading the renamed file to S3, and then registering that file with the system by POSTing a new image.
+
+#### Browser
+The browser component is similar to the PopUp in that it's permanently rendered on top of the map, but only visible when it's open state is true, which is triggered by clicking the Open Browser button on the PopUp. This also updates the camera ID state of the browser which then pulls in a page of images from the backend to display.
+
+The browser displays two components that control the images, the first is the pagination which is is simply a page number, the other is a set of three buttons, Badger, Fox, and Cat. Selecting either of those will request the backend to sort by the highest score for that animal and return the images in that order, the page number determines the pagination. This is a simple design that works seamlessly with the filtering and pagination supported by Django.
 
 ## Todo
 ML Models, Datasets, Training Experiments and Results.
