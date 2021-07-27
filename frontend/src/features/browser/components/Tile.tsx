@@ -3,6 +3,7 @@ import { Spinner } from 'evergreen-ui';
 import React from 'react';
 import { Image } from '../types';
 import styles from './Tile.module.css';
+import { S3_URL } from '../../../config';
 
 interface TileProps {
   image: Image;
@@ -16,7 +17,7 @@ export function Tile({ image }: TileProps) {
         alt={image ? image.object_key : 'Placeholder'}
         src={
           image
-            ? `http://localstack:4566/images/${image.object_key}`
+            ? `${S3_URL}/images/${image.object_key}`
             : 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640'
         }
       />
