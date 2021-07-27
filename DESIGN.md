@@ -61,8 +61,24 @@ This viewpoint explains how the components interact when a user uploads an image
 ![Sequence Diagram](http://www.plantuml.com/plantuml/png/VP71JiCm38RlUOeSuR0Nw66Q14SGXnquLbvhZK2MLh4BsjjZrDIP4U6okVRlpx-T0p5aNYxHmS1JzWynO68FL28tIpaCOGR9lkA9C7zYbdhzC9BdfwCgjjYDm702GlzoUiU1Zp88pYWIcwYwnoq0qjWvLypjzdLuvy_8_PoHmZdXs2yvtjsxQdGduhMjyqPrGxCkHBTm7ouI2icK34rWyvG86xOKqaijyDMwskjQdIU1us_jLhPK7MfOUkZEGu9ufK9h7a8fM-EVHuXHCQfh3bDLOpqPkKGckrbbgQLwJ7Nx1O6RJxyELtpZoBfEupqiTdZ3uMD3oZ-CFsg8x5T0A4ddQzUjuTBfC1AMbZJn_prLW6bq1_bPBl4R)
 
 ## Design Decisions
- - Map behind everything. Nice effect.
- - List/Retrieve serializers for camera. 
+
+#### Map behind everything. 
+I load and display the map behind everythingm including the login screen where it just blurs it and absorbs clicks. Upon login, the map becomes visible and everything is rendered on top. I did it this way because I thought the effect looked cool, it was achived by rendering the map on a div at one layer, and then having a div overlay on top using appropriate CSS settings to manage absolute positioning and to let clicks through. All components are rendered as children and passed into the map component.
+
+#### Hard Coded Classes
+There are three classes in the system: Fox, badger, & Cat. These are stored as attributes of an Image object as three floats, which are ultimately stored in the PostGRES database. This is a very static and hardcoded approach, and probably not how I'd implement the system for real. The reason I adopted this approach is because it allowed me to take advantage of Django Rest Framework's filtering backend that lets me filter by the model fields easily. This makes the API call very nice as the client simply requests `?ordering=fox` to order by foxes, and Django handles the rest. It's fast too.
+
+#### Authentication
+Users authenticate with a username and password by attempting to obtain a token. If the username and password are correct and associated with a user, and a token exists, it is returned to the client to allow them to authenticate with the token in the future.
+
+#### Authorisation
+When attempting to access the `camera` or `image` resources, the user must first be authenticated, this is done with Django IsAuthenticated permissions. Upon fetching a camera or list of cameras, the queryset filters by cameras where the associated user is the same as the requesting user. This works because a camera can only have one user. For images the logic is similar, except the camera ID must be provided as part of the requst, and only the images belonging to that camera are returned. In order to make sure the user is authenticated, it first checks that the requested camera ID belongs to the user.
+
+#### Image Count
+In order for the PopUp (see Frontend Components below) to display the number of images in the popUp without doing any heavy lifting, the Camera Serializer in Django computes the count of the number of images associated with the camera object and returns it as an extra field which is accessible by the Frontend.
+
+#### Waiting Indicator
+Due to the asynchronous nature of the image upload and the time taken to process the images, it is possible (even likely) that the user will browse the images before their results have been computed. To indicate that results are still being computed, a little loading symbol is displayed against any images not yet complete. In order for the front end to know when to display this loading symbol, I compute an extra field called `waiting` inside the ImageSerializer which checks to see if all the Fox, Badger, and Cat fields are zero, because if they are then the image has not been processed (the ML model cannot predict a zero). This field is returned as part of the serialized image response.
 
 ## Front End Mocks
 I created these mockups as a guide to building the UI, the details are slightly different as I used the Evergreen UI component library. There are also other screens such as dialogs that aren't included here. I mocked these up as a rough idea of what I wanted to do, then filled in the gaps whilst coding the front end. A small project like this didn't require complete and accurate mockups up front, but just enough so I knew what features I'd need to build.
