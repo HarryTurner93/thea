@@ -1,16 +1,12 @@
-from django.contrib.auth.models import User
 from rest_framework import viewsets, permissions, status, mixins, generics
-from rest_framework.views import APIView
 from .models import Camera, Image
-from .serializers import CameraSerializer, ImageSerializer, UserSerializer
+from .serializers import CameraSerializer, ImageSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from rest_framework.exceptions import PermissionDenied, ParseError
 from rest_framework import filters
 
-from .config.config import CONFIG
 
 # Todo: Add type annotations
 # Todo: Add docstrings.

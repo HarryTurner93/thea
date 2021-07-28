@@ -32,6 +32,14 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
+  # Redis
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6389:6389
+    command: redis-server --port 6389 --requirepass z5AS92W5Z9ID
+
   # Django
   api:
     build:
@@ -48,4 +56,19 @@ services:
     ports:
       - 8001:8000
     depends_on:
+      - db
+
+  # Base Celery Worker
+  celery_worker:
+    build:
+      context: api/
+    command: >
+      sh -c "celery --app api.celery:CELERY_APP worker --loglevel=DEBUG --concurrency=1 --max-tasks-per-child=1"
+    working_dir: /code
+    environment:
+      - ENVIRONMENT=LOCAL
+    volumes:
+      - ./api/src:/code
+    depends_on:
+      - redis
       - db
