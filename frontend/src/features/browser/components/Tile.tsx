@@ -18,7 +18,7 @@ export function Tile({ image }: TileProps) {
         src={
           image
             ? `${S3_URL}/images/${image.object_key}`
-            : 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640'
+            : 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg'
         }
       />
       {image ? (

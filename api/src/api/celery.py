@@ -1,7 +1,11 @@
 import os
+import django
 from celery import Celery
 from api import settings
 from api.config.config import CONFIG
+
+# Set the default Django settings module for the 'celery' program.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.settings')
 
 # Create celery application.
 CELERY_APP = Celery('project_thea_revamped')
@@ -27,6 +31,9 @@ CELERY_APP.conf.update(
     # For unit-testing
     task_always_eager = False,
 )
+
+# Load task modules from all registered Django apps.
+CELERY_APP.autodiscover_tasks()
 
 @CELERY_APP.task
 def life_beat():

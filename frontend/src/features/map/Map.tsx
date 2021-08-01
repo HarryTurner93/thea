@@ -27,6 +27,7 @@ export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, 
   const map = useRef<mapboxgl.Map | null | undefined>(null);
 
   const [cameras, setCameras] = useState<Camera[]>([]);
+  const [calledAPI, setCalledAPI] = useState(false);
   const [clickCoordinates, setClickCoordinates] = useState({
     latitude: 0,
     longitude: 0,
@@ -138,11 +139,15 @@ export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, 
   // results in them all being displayed on the map.
   useEffect(() => {
     // If token is "" just skip, don't hit the API.
-    if (login.token === '' || cameras.length > 0) return;
+    if (login.token === '') return;
+
+    // Only call this function once. Horrible, there must be a better way?!
+    if (calledAPI) return;
 
     // Update array of cameras with any new ones.
     getCameras(login)
-      .then((data) =>
+      .then((data) => {
+        setCalledAPI(true);
         setCameras((existingCameras) => {
           const existingIDs = existingCameras.map((camera) => camera.id);
           const newCameras = data.filter((camera: Camera) => !existingIDs.includes(camera.id));
@@ -157,12 +162,12 @@ export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, 
             .filter((markedCamera: Camera | null) => markedCamera !== null);
 
           return [...existingCameras, ...markedCameras];
-        })
-      )
+        });
+      })
 
       // Catch errors.
       .catch((error) => console.log(error));
-  }, [onCameraClick, login, cameras]);
+  }, [onCameraClick, login]);
 
   // Close Naming Dialog
   // This callback is passed to the dialog that opens when the Map is in NamingCamera state.

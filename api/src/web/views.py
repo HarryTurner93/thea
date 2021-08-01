@@ -6,6 +6,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, ParseError
 from rest_framework import filters
+from .tasks import process_image
 
 
 # Todo: Add type annotations
@@ -56,11 +57,9 @@ class ListImages(mixins.ListModelMixin,
         serializer = ImageSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            # Todo: Launch an ML celery task to process it.
-            import random
-            Image.objects.filter(object_key=serializer.data['object_key']) \
-                .update(fox=random.random(),
-                        cat=random.random(),
-                        badger=random.random())
+
+            ## Call the celery task to process it.
+            process_image.delay(object_key=serializer.data['object_key'])
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

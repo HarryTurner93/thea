@@ -69,7 +69,7 @@ module.exports = {
         'jsx-a11y/no-noninteractive-element-interactions': 'off',
         'jsx-a11y/no-static-element-interactions': 'off',
 
-        '@typescript-eslint/no-unused-vars': ['error'],
+        '@typescript-eslint/no-unused-vars': 'off',
 
         '@typescript-eslint/explicit-function-return-type': ['off'],
         '@typescript-eslint/explicit-module-boundary-types': ['off'],

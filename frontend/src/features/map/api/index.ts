@@ -2,6 +2,7 @@ import { LoginState } from '../../login/loginSlice';
 import { API_URL } from '../../../config';
 
 export function getCameras(login: LoginState) {
+  console.log('Get Cameras!');
   return new Promise<any>((resolve) => {
     const options = {
       headers: new Headers({ Authorization: `Token ${login.token}` }),
