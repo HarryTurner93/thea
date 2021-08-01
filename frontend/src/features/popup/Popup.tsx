@@ -127,7 +127,7 @@ function Popup({
         }
       }
       setPopUpInfo((prevState) => {
-        return { ...prevState, image_count: files.length };
+        return { ...prevState, image_count: files.length + prevState.image_count };
       });
     }
   }, [login, files, popUpCameraID]);

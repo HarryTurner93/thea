@@ -18,7 +18,7 @@ export function Tile({ image }: TileProps) {
         src={
           image
             ? `${S3_URL}/images/${image.object_key}`
-            : 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg'
+            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKytDZEvtbV-JAOMiLkowWIsDBlcc0obbgqZPOJWQtJX4WfnrSEw9I0iyCJd7DEd5peRo&usqp=CAU'
         }
       />
       {image ? (

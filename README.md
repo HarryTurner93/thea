@@ -12,3 +12,10 @@ aws --endpoint-url http://localhost:4566 s3api put-bucket-acl --bucket images --
 
 Useful commands.
 See buckets - aws s3api list-buckets --endpoint-url http://localhost:4566
+
+# Todo
+ - All todos throughout code
+ - Lint BE.
+ - ML model trained and deployed into Celery function, then written up.
+ - Deploy entire app to EC2 and verify installation. Produce installation readme.
+ - Final additions to write up.
