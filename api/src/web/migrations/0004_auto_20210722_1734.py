@@ -6,27 +6,27 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('web', '0003_auto_20210722_1720'),
+        ("web", "0003_auto_20210722_1720"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='image',
-            name='labels',
+            model_name="image",
+            name="labels",
         ),
         migrations.AddField(
-            model_name='image',
-            name='badger',
+            model_name="image",
+            name="badger",
             field=models.FloatField(default=0.0),
         ),
         migrations.AddField(
-            model_name='image',
-            name='cat',
+            model_name="image",
+            name="cat",
             field=models.FloatField(default=0.0),
         ),
         migrations.AddField(
-            model_name='image',
-            name='fox',
+            model_name="image",
+            name="fox",
             field=models.FloatField(default=0.0),
         ),
     ]

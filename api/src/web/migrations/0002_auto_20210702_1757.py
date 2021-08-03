@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('web', '0001_initial'),
+        ("web", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='camera',
-            name='name',
-            field=models.CharField(default='', max_length=80),
+            model_name="camera",
+            name="name",
+            field=models.CharField(default="", max_length=80),
         ),
         migrations.AddField(
-            model_name='image',
-            name='labels',
+            model_name="image",
+            name="labels",
             field=models.JSONField(default={}),
         ),
     ]

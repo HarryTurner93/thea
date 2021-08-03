@@ -1,0 +1,9 @@
+[flake8]
+import-order-style = google
+select = ANN,B,B9,BLK,C,D,DAR,E,F,I,W
+max-complexity = 35
+max-line-length = 120
+ignore = B902, D100, ANN201, ANN001, D102, D106, D101, ANN101, ANN204, ANN003, D103, D105, D104, ANN002, DAR401, DAR201
+exclude = web/migrations
+per-file-ignores =
+    web/apps.py:D101

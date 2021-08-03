@@ -1,8 +1,8 @@
-
+# Third Party
 import boto3
 import botocore.client
-
 import classutilities
+
 
 class BaseConfig(classutilities.ConfigClassMixin):
     """Base class for app configuration."""
@@ -24,14 +24,18 @@ class BaseConfig(classutilities.ConfigClassMixin):
     @classutilities.classproperty
     def S3_CLIENT(cls) -> botocore.client.BaseClient:
         """Create S3 client (connector)."""
-        return boto3.client(service_name="s3",
-                            aws_access_key_id=cls.AWS_ACCESS_KEY_ID,
-                            aws_secret_access_key=cls.AWS_SECRET_ACCESS_KEY,
-                            endpoint_url=cls.AWS_ENDPOINT_URL,
-                            region_name=cls.AWS_REGION)
+        return boto3.client(
+            service_name="s3",
+            aws_access_key_id=cls.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=cls.AWS_SECRET_ACCESS_KEY,
+            endpoint_url=cls.AWS_ENDPOINT_URL,
+            region_name=cls.AWS_REGION,
+        )
 
     @classutilities.classproperty
     def CELERY_URL(cls) -> str:
-        """Generate Celery connection URL"""
-        return f"redis://:{cls.REDIS_PASSWORD}@{cls.REDIS_HOSTNAME}:" \
-               f"{cls.REDIS_PORT}/{cls.REDIS_DB_NUMBER}"
+        """Generate Celery connection URL."""
+        return (
+            f"redis://:{cls.REDIS_PASSWORD}@{cls.REDIS_HOSTNAME}:"
+            f"{cls.REDIS_PORT}/{cls.REDIS_DB_NUMBER}"
+        )

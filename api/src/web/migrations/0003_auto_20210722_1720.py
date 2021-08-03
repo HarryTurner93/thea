@@ -6,22 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('web', '0002_auto_20210702_1757'),
+        ("web", "0002_auto_20210702_1757"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='image',
-            name='id',
+            model_name="image",
+            name="id",
         ),
         migrations.AlterField(
-            model_name='image',
-            name='labels',
+            model_name="image",
+            name="labels",
             field=models.JSONField(default=dict),
         ),
         migrations.AlterField(
-            model_name='image',
-            name='object_key',
+            model_name="image",
+            name="object_key",
             field=models.CharField(max_length=80, primary_key=True, serialize=False),
         ),
     ]

@@ -1,4 +1,7 @@
+# Third Party
 from django.contrib import admin
+
+# Application Relative
 from .models import Camera, Image
 
 # Register your models here.
