@@ -17,7 +17,7 @@ services:
       - AWS_SECRET_KEY='test
       - DISABLE_CORS_CHECKS=1
     volumes:
-      - "${PWD}/s3:/tmp/localstack"
+      - "${PWD}/infrastructure/s3:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
 
   # Postgres
@@ -27,7 +27,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ${PWD}/db:/var/lib/postgresql/data
+      - ${PWD}/infrastructure/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -44,7 +44,7 @@ services:
   # Django
   api:
     build:
-      context: api/
+      context: ${PWD}/api/
     command: >
       sh -c "
       python manage.py migrate &&
@@ -62,7 +62,7 @@ services:
   # Base Celery Worker
   celery_worker:
     build:
-      context: api/
+      context: ${PWD}/api/
     command: >
       sh -c "celery --app api.celery:CELERY_APP worker --loglevel=DEBUG --concurrency=1 --max-tasks-per-child=1"
     working_dir: /code

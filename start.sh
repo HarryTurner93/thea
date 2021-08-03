@@ -1,4 +1,4 @@
-./star  #!/bin/bash
+#!/bin/bash
 
 # If docker-compose is not installed, then install it.
 if ! command -v docker-compose &>/dev/null; then
@@ -20,11 +20,11 @@ if ! command -v docker &>/dev/null; then
 fi
 
 # Make the directory for the database.
-[ ! -d "./db" ] && mkdir db
+[ ! -d "./infrastructure/db" ] && mkdir infrastructure/db
 
 # Build or run
 if [ "$1" == "build" ]; then
-  docker-compose build
+  docker-compose -f infrastructure/docker-compose.yml build
 else
-  docker-compose up
+  docker-compose -f infrastructure/docker-compose.yml  up
 fi
