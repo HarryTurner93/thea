@@ -11,6 +11,7 @@ api/src/api/__pycache__/
 # Infra
 db/
 s3/
+model.pth
 
 # React
 .idea/
