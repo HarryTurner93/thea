@@ -20,3 +20,6 @@ Start the backend.
 `docker exec -ti infrastructure_api_1 /bin/bash`
 `flake8`
 
+# Frontend
+ Lint
+ bash lint.sh inside FE.
