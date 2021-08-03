@@ -136,6 +136,8 @@ Most improvements are around security, partly because implementing them at the t
 
 **Input Validation** There is no input validation anywhere in the system, which is lazy of me, but would also complicate things for this demo project. Specifically, the frontend happily uploads whatever files it wants to the backend (granted these aren't executed anywhere, but still..) It also lets the user enter names for cameras which are then sent straight to the server with no validation etc. Not best practice.
 
+**No CORS Checks** CORS checks are turned off for S3, because the localstack doesn't seem to work properly with them. For real S3 this shouldn't be an issue.
+
 #### Invalid
 
 **Images per Page Fixed** There are six images displayed in the browser, and this number is actually fixed in multiple places. It's defined in the pagination settings in the BE which always returns 6, and it's used to compute the number pages from the returned count. Not ideal but it works.
@@ -147,5 +149,10 @@ Most improvements are around security, partly because implementing them at the t
 ## Todo
 ML Models, Datasets, Training Experiments and Results.
 UI Wireframes.
+Django Linting
+Django Tests
+Update Call Model in Readme
+Add Readme Instructions for installation
+All TODOs in code.
 
 
