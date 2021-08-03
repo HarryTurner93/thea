@@ -13,6 +13,11 @@ aws --endpoint-url http://localhost:4566 s3api put-bucket-acl --bucket images --
 Useful commands.
 See buckets - aws s3api list-buckets --endpoint-url http://localhost:4566
 
+# ML
+Download from here.
+https://drive.google.com/file/d/1UUwsKd064Pw1cCk-CFPV8RR1igBkM5Df/view?usp=sharing
+Put in api/model directory.
+
 # Backend
 
 Lint
