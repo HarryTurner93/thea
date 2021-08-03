@@ -12,3 +12,11 @@ aws --endpoint-url http://localhost:4566 s3api put-bucket-acl --bucket images --
 
 Useful commands.
 See buckets - aws s3api list-buckets --endpoint-url http://localhost:4566
+
+# Backend
+
+Lint
+Start the backend.
+`docker exec -ti infrastructure_api_1 /bin/bash`
+`flake8`
+
