@@ -1,3 +1,5 @@
+
+# Production
 boto3==1.17.98
 celery[redis]==5.1.2
 classutilities==0.2.0
@@ -5,6 +7,9 @@ Django==3.2.4
 psycopg2-binary==2.8.6
 djangorestframework==3.12.4
 django-cors-headers==3.7.0
+psycopg2-binary>=2.8
+
+# Development
 flake8==3.9.2
 flake8-annotations==2.6.2
 flake8-bugbear==21.4.3
