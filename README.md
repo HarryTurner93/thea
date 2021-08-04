@@ -1,6 +1,7 @@
-# project_thea_revamped
+# Thea
 A much better designed version of project_thea for the purposes of practicing full stack system design.
 
+# Installation
 First time
 bash start.sh
 Starts the API, starts postgres, starts S3 (localstack)
@@ -10,7 +11,7 @@ aws --endpoint-url http://localhost:4566 s3api put-bucket-cors --bucket images -
 aws --endpoint-url http://localhost:4566 s3api put-bucket-acl --bucket images --acl public-read
 
 
-Useful commands.
+# Useful Commands
 See buckets - aws s3api list-buckets --endpoint-url http://localhost:4566
 
 # ML
@@ -28,3 +29,8 @@ Start the backend.
 # Frontend
  Lint
  bash lint.sh inside FE.
+
+## Todo
+Django Tests
+Update Call Model in Readme
+Add Readme Instructions for installation
