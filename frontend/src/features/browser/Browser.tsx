@@ -26,8 +26,8 @@ type Props = ConnectedProps<typeof connector>;
 function Browser({ browserState, browserInfo, closeBrowser, login }: Props) {
   const [options] = React.useState([
     { label: 'Fox', value: 'fox' },
-    { label: 'Badger', value: 'badger' },
-    { label: 'Cat', value: 'cat' },
+    { label: 'rodent', value: 'rodent' },
+    { label: 'Bird', value: 'bird' },
   ]);
   const [ordering, setOrdering] = React.useState<string | number | boolean>('fox');
   const [images, setImages] = React.useState<Image[]>([]);
@@ -65,7 +65,7 @@ function Browser({ browserState, browserInfo, closeBrowser, login }: Props) {
           setImages(data.images);
         });
       }
-    }, 5000);
+    }, 1000);
     return () => clearInterval(interval);
   }, [images]);
 

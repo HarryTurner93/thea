@@ -1,8 +1,8 @@
 export type Image = {
   object_key: string;
   fox: number;
-  badger: number;
-  cat: number;
+  rodent: number;
+  bird: number;
   camera: number;
   waiting: boolean;
 };

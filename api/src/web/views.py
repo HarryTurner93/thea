@@ -32,7 +32,7 @@ class ListImages(mixins.ListModelMixin, generics.GenericAPIView):
     serializer_class = ImageSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.OrderingFilter]
-    ordering_fields = ["fox", "badger", "cat"]
+    ordering_fields = ["fox", "rodent", "bird"]
 
     def get_queryset(self):
         """Get the images that belong to the camera if the camera belongs to the user."""

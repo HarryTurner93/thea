@@ -96,7 +96,7 @@ Finally the upload files feature lets a user select multiple files from their ma
 #### Browser
 The browser component is similar to the PopUp in that it's permanently rendered on top of the map, but only visible when it's open state is true, which is triggered by clicking the Open Browser button on the PopUp. This also updates the camera ID state of the browser which then pulls in a page of images from the backend to display.
 
-The browser displays two components that control the images, the first is the pagination which is is simply a page number, the other is a set of three buttons, Badger, Fox, and Cat. Selecting either of those will request the backend to sort by the highest score for that animal and return the images in that order, the page number determines the pagination. This is a simple design that works seamlessly with the filtering and pagination supported by Django.
+The browser displays two components that control the images, the first is the pagination which is is simply a page number, the other is a set of three buttons, Rodent, Fox, and Bird. Selecting either of those will request the backend to sort by the highest score for that animal and return the images in that order, the page number determines the pagination. This is a simple design that works seamlessly with the filtering and pagination supported by Django.
 
 #### Login
 The login component is a basic username and password text box with a Submit button. It is rendered on top of the map and absorbs all clicks, the Map doesn't poll for data until the user is logged in. I did this because it made a really nice effect where the map was visible behind the login, and then became visible upon login.

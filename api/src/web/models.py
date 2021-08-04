@@ -19,9 +19,9 @@ class Camera(models.Model):
 class Image(models.Model):
     camera = models.ForeignKey(Camera, related_name="images", on_delete=models.CASCADE)
     object_key = models.CharField(max_length=80, primary_key=True)
-    fox = models.FloatField(default=0.0)
-    badger = models.FloatField(default=0.0)
-    cat = models.FloatField(default=0.0)
+    fox = models.FloatField(default=-1.0)
+    rodent = models.FloatField(default=-1.0)
+    bird = models.FloatField(default=-1.0)
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

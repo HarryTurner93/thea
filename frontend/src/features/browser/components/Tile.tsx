@@ -30,8 +30,8 @@ export function Tile({ image }: TileProps) {
         ) : (
           <div className={styles.labelContainer}>
             <SimpleLabel label="Fox" value={`${Math.round(image.fox * 100)}%`} />
-            <SimpleLabel label="Badger" value={`${Math.round(image.badger * 100)}%`} />
-            <SimpleLabel label="Cat" value={`${Math.round(image.cat * 100)}%`} />
+            <SimpleLabel label="rodent" value={`${Math.round(image.rodent * 100)}%`} />
+            <SimpleLabel label="Bird" value={`${Math.round(image.bird * 100)}%`} />
           </div>
         )
       ) : null}

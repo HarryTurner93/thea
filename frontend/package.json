@@ -48,6 +48,7 @@
   "devDependencies": {
     "@types/mapbox-gl": "^2.3.3",
     "@types/react-router-dom": "^5.1.8",
+    "@types/uuid": "^8.3.1",
     "cypress": "^8.0.0",
     "cypress-file-upload": "^5.0.8",
     "eslint-config-prettier": "^8.3.0",

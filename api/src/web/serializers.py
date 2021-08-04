@@ -20,7 +20,7 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_waiting(self, obj):
-        return any([obj.fox == 0, obj.badger == 0, obj.cat == 0])
+        return any([obj.fox == -1, obj.rodent == -1, obj.bird == -1])
 
 
 class CameraSerializer(serializers.ModelSerializer):
