@@ -21,7 +21,7 @@
   transition: 0.1;
 }
 .marker:hover {
-  opacity: 1.0;
+  opacity: 1;
   transition: 0.1;
 }
 .addSensorLabel {
