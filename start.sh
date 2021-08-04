@@ -26,5 +26,5 @@ fi
 if [ "$1" == "build" ]; then
   docker-compose -f infrastructure/docker-compose.yml build
 else
-  docker-compose -f infrastructure/docker-compose.yml  up
+  docker-compose -f infrastructure/docker-compose.yml up -d
 fi
