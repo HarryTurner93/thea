@@ -145,14 +145,3 @@ Most improvements are around security, partly because implementing them at the t
 #### Aesthetic
 
 **Images Get Squashed** What is says really, it just packs 6 images into a grid on the screen with a fixed size to make the UI work. There's no attempt to handle varying image size. I skipped this because it's an uninteresting detail.
-
-## Todo
-ML Models, Datasets, Training Experiments and Results.
-UI Wireframes.
-Django Linting
-Django Tests
-Update Call Model in Readme
-Add Readme Instructions for installation
-All TODOs in code.
-
-
