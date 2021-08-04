@@ -1,18 +1,27 @@
 # Thea
 A much better designed version of project_thea for the purposes of practicing full stack system design.
 
+# System Requirements
+
+- I have only tested this system on Ubuntu Linux. All instructions are for that target system.
+- [Docker](https://docs.docker.com/engine/install/)
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)
+
 # Installation
 
 - Clone this repo with `git clone https://github.com/HarryTurner93/thea.git && cd thea `
-- 
+- Run `bash start.sh build` to pull and build the containers for the local stack.
+- Add (or update) the line `127.0.0.1 localhost localstack` in your `/etc/hosts` file.
+- Run `bash start.sh` which starts the system.
+- In a separate shell, run `aws s3api create-bucket --bucket images --endpoint-url http://localhost:4566`
+- Finally access the front end by going to `http://localhost:3000` in the browser. 
 
-First time
-bash start.sh
-Starts the API, starts postgres, starts S3 (localstack)
+Note that the front end is deployed in production mode, I just map it to 3000 to avoid conflicts on my system.
+
+
+
 Create bucket -  aws s3api create-bucket --bucket images --endpoint-url http://localhost:4566
-Add localstack to hosts under 127.0.0.1 so the front end can resolve it.
-aws --endpoint-url http://localhost:4566 s3api put-bucket-cors --bucket images --cors-configuration file://s3_cors.json
-aws --endpoint-url http://localhost:4566 s3api put-bucket-acl --bucket images --acl public-read
+
 
 
 # Useful Commands
