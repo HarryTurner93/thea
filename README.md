@@ -1,5 +1,10 @@
-# project_thea_revamped
+# Thea
 A much better designed version of project_thea for the purposes of practicing full stack system design.
+
+# Installation
+
+- Clone this repo with `git clone https://github.com/HarryTurner93/thea.git && cd thea `
+- 
 
 First time
 bash start.sh
@@ -10,12 +15,32 @@ aws --endpoint-url http://localhost:4566 s3api put-bucket-cors --bucket images -
 aws --endpoint-url http://localhost:4566 s3api put-bucket-acl --bucket images --acl public-read
 
 
-Useful commands.
+# Useful Commands
 See buckets - aws s3api list-buckets --endpoint-url http://localhost:4566
 
-# Todo
- - All todos throughout code
- - Lint BE.
- - ML model trained and deployed into Celery function, then written up.
- - Deploy entire app to EC2 and verify installation. Produce installation readme.
- - Final additions to write up.
+# ML
+Download from here.
+https://drive.google.com/file/d/1UUwsKd064Pw1cCk-CFPV8RR1igBkM5Df/view?usp=sharing
+Put in api/model directory.
+
+# Backend
+
+Lint
+Start the backend.
+`docker exec -ti infrastructure_api_1 /bin/bash`
+`flake8`
+
+# Frontend
+ Lint
+ bash lint.sh inside FE.
+
+## Todo
+Django Tests
+Update Call Model in Readme
+Add Readme Instructions for installation
+All todos throughout code
+Lint BE.
+ML model trained and deployed into Celery function, then written up.
+Deploy entire app to EC2 and verify installation. Produce installation readme.
+Final additions to write up.
+

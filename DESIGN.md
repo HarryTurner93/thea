@@ -61,8 +61,24 @@ This viewpoint explains how the components interact when a user uploads an image
 ![Sequence Diagram](http://www.plantuml.com/plantuml/png/VP71JiCm38RlUOeSuR0Nw66Q14SGXnquLbvhZK2MLh4BsjjZrDIP4U6okVRlpx-T0p5aNYxHmS1JzWynO68FL28tIpaCOGR9lkA9C7zYbdhzC9BdfwCgjjYDm702GlzoUiU1Zp88pYWIcwYwnoq0qjWvLypjzdLuvy_8_PoHmZdXs2yvtjsxQdGduhMjyqPrGxCkHBTm7ouI2icK34rWyvG86xOKqaijyDMwskjQdIU1us_jLhPK7MfOUkZEGu9ufK9h7a8fM-EVHuXHCQfh3bDLOpqPkKGckrbbgQLwJ7Nx1O6RJxyELtpZoBfEupqiTdZ3uMD3oZ-CFsg8x5T0A4ddQzUjuTBfC1AMbZJn_prLW6bq1_bPBl4R)
 
 ## Design Decisions
- - Map behind everything. Nice effect.
- - List/Retrieve serializers for camera. 
+
+#### Map behind everything. 
+I load and display the map behind everythingm including the login screen where it just blurs it and absorbs clicks. Upon login, the map becomes visible and everything is rendered on top. I did it this way because I thought the effect looked cool, it was achived by rendering the map on a div at one layer, and then having a div overlay on top using appropriate CSS settings to manage absolute positioning and to let clicks through. All components are rendered as children and passed into the map component.
+
+#### Hard Coded Classes
+There are three classes in the system: Fox, badger, & Cat. These are stored as attributes of an Image object as three floats, which are ultimately stored in the PostGRES database. This is a very static and hardcoded approach, and probably not how I'd implement the system for real. The reason I adopted this approach is because it allowed me to take advantage of Django Rest Framework's filtering backend that lets me filter by the model fields easily. This makes the API call very nice as the client simply requests `?ordering=fox` to order by foxes, and Django handles the rest. It's fast too.
+
+#### Authentication
+Users authenticate with a username and password by attempting to obtain a token. If the username and password are correct and associated with a user, and a token exists, it is returned to the client to allow them to authenticate with the token in the future.
+
+#### Authorisation
+When attempting to access the `camera` or `image` resources, the user must first be authenticated, this is done with Django IsAuthenticated permissions. Upon fetching a camera or list of cameras, the queryset filters by cameras where the associated user is the same as the requesting user. This works because a camera can only have one user. For images the logic is similar, except the camera ID must be provided as part of the requst, and only the images belonging to that camera are returned. In order to make sure the user is authenticated, it first checks that the requested camera ID belongs to the user.
+
+#### Image Count
+In order for the PopUp (see Frontend Components below) to display the number of images in the popUp without doing any heavy lifting, the Camera Serializer in Django computes the count of the number of images associated with the camera object and returns it as an extra field which is accessible by the Frontend.
+
+#### Waiting Indicator
+Due to the asynchronous nature of the image upload and the time taken to process the images, it is possible (even likely) that the user will browse the images before their results have been computed. To indicate that results are still being computed, a little loading symbol is displayed against any images not yet complete. In order for the front end to know when to display this loading symbol, I compute an extra field called `waiting` inside the ImageSerializer which checks to see if all the Fox, Badger, and Cat fields are zero, because if they are then the image has not been processed (the ML model cannot predict a zero). This field is returned as part of the serialized image response.
 
 ## Front End Mocks
 I created these mockups as a guide to building the UI, the details are slightly different as I used the Evergreen UI component library. There are also other screens such as dialogs that aren't included here. I mocked these up as a rough idea of what I wanted to do, then filled in the gaps whilst coding the front end. A small project like this didn't require complete and accurate mockups up front, but just enough so I knew what features I'd need to build.
@@ -93,16 +109,39 @@ The external interface to the rest of the system is two fold. First, two callbac
 
 Finally the upload files feature lets a user select multiple files from their machine and then uploads these to the system by generating a random name, uploading the renamed file to S3, and then registering that file with the system by POSTing a new image.
 
+![Map](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/map.png)
+
 #### Browser
 The browser component is similar to the PopUp in that it's permanently rendered on top of the map, but only visible when it's open state is true, which is triggered by clicking the Open Browser button on the PopUp. This also updates the camera ID state of the browser which then pulls in a page of images from the backend to display.
 
 The browser displays two components that control the images, the first is the pagination which is is simply a page number, the other is a set of three buttons, Rodent, Fox, and Bird. Selecting either of those will request the backend to sort by the highest score for that animal and return the images in that order, the page number determines the pagination. This is a simple design that works seamlessly with the filtering and pagination supported by Django.
+
+![Browser](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/browser.png)
 
 #### Login
 The login component is a basic username and password text box with a Submit button. It is rendered on top of the map and absorbs all clicks, the Map doesn't poll for data until the user is logged in. I did this because it made a really nice effect where the map was visible behind the login, and then became visible upon login.
 
 Upon submit, the components attempts to login on the backend by receiving a token, this is either successful or not depending on whether the credentials were correct. If they were, the token is stashed into global state and this triggers the rest of the app to start working, otherwise it fails and alerts the user.
 
-## Todo
-ML Models, Datasets, Training Experiments and Results.
-UI Wireframes.
+![Login](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/login.png)
+
+## Improvements
+
+#### Security
+Most improvements are around security, partly because implementing them at the time was taking too much effort to get working and wasn't what I wanted to focus on in this project, so I deliberately skipped some best security practices and instead highlight them here.
+
+**Public Image URLs** All images are accessible on the public S3 endpoint, whereas in reality I would generate presigned URLs. I did this because making presigned URLs work with localstack is a) complicated, and b) not the same as S3! It's actually much easier to generate presigned URLs when using the real S3 and I didn't want to waste time making it work for the development stack. To implement this, the FE would need to make another call to the BE to get the presigned URLs or have them returned in the image objects themselves.
+
+**File Name Generation** The client generates filenames, puts them in S3 and then tells the backend about them. This means the BE has less control. Ideally, I'd introduce another call to the backend to request the ability to upload an image. The BE would then generate the name, and also the presigned POST URL, and the client would use that instead.
+
+**Input Validation** There is no input validation anywhere in the system, which is lazy of me, but would also complicate things for this demo project. Specifically, the frontend happily uploads whatever files it wants to the backend (granted these aren't executed anywhere, but still..) It also lets the user enter names for cameras which are then sent straight to the server with no validation etc. Not best practice.
+
+**No CORS Checks** CORS checks are turned off for S3, because the localstack doesn't seem to work properly with them. For real S3 this shouldn't be an issue.
+
+#### Invalid
+
+**Images per Page Fixed** There are six images displayed in the browser, and this number is actually fixed in multiple places. It's defined in the pagination settings in the BE which always returns 6, and it's used to compute the number pages from the returned count. Not ideal but it works.
+
+#### Aesthetic
+
+**Images Get Squashed** What is says really, it just packs 6 images into a grid on the screen with a fixed size to make the UI work. There's no attempt to handle varying image size. I skipped this because it's an uninteresting detail.
