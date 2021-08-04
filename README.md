@@ -4,8 +4,8 @@ A much better designed version of project_thea for the purposes of practicing fu
 # System Requirements
 
 - I have only tested this system on Ubuntu Linux. All instructions are for that target system.
-- [Docker](https://docs.docker.com/engine/install/)
-- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)
+- Install [Docker](https://docs.docker.com/engine/install/)
+- Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)
 
 # Installation
 
