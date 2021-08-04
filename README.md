@@ -3,7 +3,8 @@ A much better designed version of project_thea for the purposes of practicing fu
 
 # Installation
 
-- Clone this repo with `git clone https://github.com/HarryTurner93/project_thea_revamped.git `
+- Clone this repo with `git clone https://github.com/HarryTurner93/thea.git && cd thea `
+- 
 
 First time
 bash start.sh
