@@ -75,3 +75,12 @@ services:
     depends_on:
       - redis
       - db
+
+  # React App
+  react:
+    build:
+      context: ${PWD}/frontend/
+    ports:
+      - 3000:80
+    depends_on:
+      - api
