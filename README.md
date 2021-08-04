@@ -1,5 +1,5 @@
 # Thea
-A much better designed version of project_thea for the purposes of practicing full stack system design.
+An ML backed camera trap image processing system for managing and analysing camera trap images.
 
 # System Requirements
 
