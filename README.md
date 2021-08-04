@@ -44,6 +44,8 @@ Start the backend.
  bash lint.sh inside FE.
 
 ## Todo
+Fix mapbox API token.
+Deploy whole lot via compose and run on ML2.
 Django Tests
 Update Call Model in Readme
 Add Readme Instructions for installation
