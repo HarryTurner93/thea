@@ -5,6 +5,10 @@ api/src/api/__pycache__/
 *.py[cod]
 *$py.class
 
+# Cypress
+frontend/cypress/videos
+frontend/cypress/screenshots
+
 # C extensions
 *.so
 
@@ -129,7 +133,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
