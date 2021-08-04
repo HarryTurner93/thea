@@ -2,6 +2,9 @@
 A much better designed version of project_thea for the purposes of practicing full stack system design.
 
 # Installation
+
+- Clone this repo with `git clone https://github.com/HarryTurner93/project_thea_revamped.git `
+
 First time
 bash start.sh
 Starts the API, starts postgres, starts S3 (localstack)
