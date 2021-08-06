@@ -5,14 +5,14 @@
 <b>Author:</b> <i>Harry Turner</i></br>
 
  - [Context](#context)
- - [Demo](demo)
- - [User Stories](user-stories)
- - [Data Model](data-model)
- - [Logical Architecture](logical-architecture)
- - [Image Upload Sequence](image-upload-sequence)
- - [Design Decisions](design-decisions)
- - [Front End](front-end)
- - [Improvements](improvements)
+ - [Demo](#demo)
+ - [User Stories](#user-stories)
+ - [Data Model](#data-model)
+ - [Logical Architecture](#logical-architecture)
+ - [Image Upload Sequence](#image-upload-sequence)
+ - [Design Decisions](#design-decisions)
+ - [Front End](#front-end)
+ - [Improvements](#improvements)
 
 # Context
 This document communicates a design for the Thea application which is an image processing and management application for camera trap data. It is a web accessible service that allows users involved in camera trap data analysis to upload their images, have them organised by the camera location they came from, have the images automatically analysed by an ML algorithm to detect species present in the image, and then browse the results of that analysis. The added value from this application is to save users time by automating the manual step of detecting animal species in camera trap images.
