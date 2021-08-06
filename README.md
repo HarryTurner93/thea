@@ -1,13 +1,13 @@
 # Thea
 An ML backed camera trap image processing system for managing and analysing camera trap images. For details on how this system was designed and built, see the [Design Document](https://github.com/HarryTurner93/thea/blob/main/DESIGN.md)
 
-# System Requirements
+## System Requirements
 
 - I have only tested this system on Ubuntu Linux. All instructions are for that target system.
 - Install [Docker](https://docs.docker.com/engine/install/)
 - Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)
 
-# Installation
+## Installation
 
 - Clone this repo with `git clone https://github.com/HarryTurner93/thea.git && cd thea `
 - Download the model from [here](https://drive.google.com/file/d/1UUwsKd064Pw1cCk-CFPV8RR1igBkM5Df/view?usp=sharing) and place it into the `api/model/` directory.
