@@ -33,7 +33,7 @@ function Login({ setLogin }: Props) {
     <div className={styles.background}>
       <div className={styles.page}>
         <Pane className={styles.container}>
-          <h1 className={styles.title}>Nature View</h1>
+          <h1 className={styles.title}>Thea</h1>
           <TextInput
             className={styles.input}
             data-name="username"
@@ -46,6 +46,7 @@ function Login({ setLogin }: Props) {
             className={styles.input}
             data-name="password"
             name="password-input"
+            type="password"
             placeholder="password"
             value={password}
             onChange={(e: React.FormEvent<HTMLInputElement>) => setPassword(e.currentTarget.value)}

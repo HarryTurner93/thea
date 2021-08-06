@@ -44,7 +44,7 @@ export const Map = React.forwardRef(({ children, onCameraClick, login }: Props, 
       container: mapContainer.current == null ? '' : mapContainer.current,
       style: 'mapbox://styles/hturner30/ck62e8klf0xzn1ithmmtve3iq',
       center: [-2.559826, 51.513417],
-      zoom: 15,
+      zoom: 11,
     });
 
     // Capture all mouse clicks and log them in component state.
