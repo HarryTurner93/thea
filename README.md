@@ -19,6 +19,6 @@ An ML backed camera trap image processing system for managing and analysing came
 - To run tests, first `cd` into the `frontend` directory then run `npx cypress run`. Note this requires `npm` to be installed.
 
 #### Stop the System
- - Run `docker-compose -f infrastructure/docker-compose.yml down`
+ - From the top level directory run `docker-compose -f infrastructure/docker-compose.yml down`
 
 Note that the front end is deployed in production mode, I just map it to 3000 to avoid conflicts on my system.
