@@ -10,7 +10,7 @@
  - [Data Model](data-model)
  - [Logical Architecture](logical-architecture)
  - [Image Upload Sequence](image-upload-sequence)
- - [Design Decisions](design-decisions
+ - [Design Decisions](design-decisions)
  - [Front End](front-end)
  - [Improvements](improvements)
 
