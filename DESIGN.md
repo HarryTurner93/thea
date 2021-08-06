@@ -1,75 +1,79 @@
 # Software Design Document
-<i>This design document adheres to [IEEE 1016-2009](https://standards.ieee.org/standard/1016-2009.html)</i></br>
+<i>This design document follows [IEEE 1016-2009](https://standards.ieee.org/standard/1016-2009.html)</i></br>
 <i>All UML diagrams are created with [Plant UML](https://plantuml.com/)</i><br>
-<b>Issued:</b> <i>2nd July 2021</i></br>
+<b>Issued:</b> <i>6th August 2021</i></br>
 <b>Author:</b> <i>Harry Turner</i></br>
 
-## Context
-This document communicates a design for the Nature View application which is an image processing and management application for camera trap data. It is a web accessible service that allows users involved in camera trap data analysis to upload their images, have them organised by the camera location they came from, have the images automatically analysed by an ML algorithm to detect species present in the image, and then browse the results of that analysis and change classifications where necessary. The added value from this application is to save users time by automating the manual step of detecting animal species in camera trap images.
+ - [Context](#context)
+ - [Demo](demo)
+ - [User Stories](user-stories)
+ - [Data Model](data-model)
+ - [Logical Architecture](logical-architecture)
+ - [Image Upload Sequence](image-upload-sequence)
+ - [Design Decisions](design-decisions
+ - [Front End](front-end)
+ - [Improvements](improvements)
+
+# Context
+This document communicates a design for the Thea application which is an image processing and management application for camera trap data. It is a web accessible service that allows users involved in camera trap data analysis to upload their images, have them organised by the camera location they came from, have the images automatically analysed by an ML algorithm to detect species present in the image, and then browse the results of that analysis. The added value from this application is to save users time by automating the manual step of detecting animal species in camera trap images.
 
 ![Camera Trap](http://www.naturespy.org/wp-content/uploads/2014/05/cameratrap.jpg)
 <i>Camera Trap - [Nature Spy](https://www.naturespy.org/2013/11/joy-camera-trapping/)</i>
 
-## Stakeholders & Concerns
+# Demo
+See demo on [front page](https://github.com/HarryTurner93/thea).
 
-#### Thea Business
-The Thea business is concerned with low development cost and maximal user satisfaction by meeting the user requirements as well as possible. The business is also concerned with evolvability of the product as user research is carried out and the problem understanding develops.
-
-#### User
-The user is concerned with ease of use, in both accessing the system and operating it. Users will not tolerate unreasonable delays or faults. 
-
-#### System Administrator
-The system administrator is concerned with simple operation of the system to reduce the maintainance load. (Simpler systems usually need fewer people to keep running). They're concerned with low costs of deployment, both in terms of deployment process and deployment infrastructure.
-
-#### Developer
-The developer is concerned with ease of system evolvability and ease of making changes. 
-
-## User Stories (Move to REQUIREMENTS.md)
+# User Stories
 
 <i>Because I'm not actively engaging with users whilst building this, these will stay fixed, so I'm putting them here. In reality these would live in Zenhub and evolve constantly.</i>
 
- - As a user I want a secure user account so that other people can't see my data.
- - As a user I want my sensors displayed on a map so they fit my mental model of organisation.
- - As a user I want to upload images directly from my browser because it's easy and I'm familiar with it.
- - As a user I want the system to predict which species are in my images so that I don't have to.
- - As a user I want the system to store my images so that I can access them easily later on.
+ - As a user...
+ - I want a secure user account so that other people can't see my data.
+ - I want my cameras displayed on a map so they fit my mental model of organisation.
+ - I want to upload images directly from my browser because it's easy and I'm familiar with it.
+ - I want to store my images against the camera trap that they came from so I can manage them easily.
+ - I want the system to predict which species are in my images so that I don't have to.
+ - I want the system to store my images so that I can access them easily later on.
+ - I want to easily browse the images stored in my camera trap so I can access them easily later on.
 
-## Data Model
+# Data Model
 This viewpoint addresses the data types used within the system. It's modelled with a UML class diagram.
 
-![Data Model](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuKhDAyaigLG8BKujKgZcKb0eBSrCKIW5yk8pKxXgOTBEYRcfHOa81SbWFeeIpzp4z5I4YamG5wA02souhgw2ae6UdfQI0jGqBWY5a80OmUMGcfS2T1a0)
+![Data Model](http://www.plantuml.com/plantuml/png/ROzD2i8m48NtSugXIw758nHSUG3NPMgc9P0VIMT0aTxTcAfHS1NU-puUatuHIgBU0GUnSiFJmWdlWAXg3MfEWpMmll61F2UgmhdahEHYSf447MLH3TSYXhaqTUNeQUOwOf_nUsEAr-6IuaYZTTd_z2aQ3l8NZJQP7x02bB-qBJRxhjir-3eUjgU2xHpeEHZrxW40)
 
-## Use Case
-This viewpoint explains the services offered by the system.
+#### Notes
+ - I hardcoded the fields for the animal probabilities for each image instance. See the rationale for this in the Design Decisions section.
 
-![Use Case Model](http://www.plantuml.com/plantuml/png/ROuz3i8m34PtdyBA14ElW0hCJAW7i8W1I_c9OYFKszEc4kgGxVbxR_2eHjK-CO2xpseSyUoZ98Ua6u6Rb6kxLm1eAmx32GyDHQsICTgRaKe9yY2Jd8wmvbitbP39eqHwiUx5fUQlSaTS0wdAS-we6wLb-ekHar_U_m40)
-
-## Logical Architecture
-This viewpoint addresses the main components in the system. It's modelled with a UML class diagram.  
-![Component Diagram](http://www.plantuml.com/plantuml/png/NP0nJu0m48Nt_ehkXidD2GCnCIaHQ8pp5IuDM5lJ7aR_lQUanJhTu_5TxhssYI3IyUP4C3ik93kteITn3dadPmHsRtYknwV8r0kQXF43eoYAsNu7RqE1UY0ma51amSWO4jc8Ub85U_eTca84YwBwuWLzArLOm4bDiBoMfK7fytuMZ3v0ellnaSDsw31-_QG6OpOQ9f4BDSsVx9Vt_-fxnBHPZwjydbMwIZ9RQjLktQBwLRAsw5T-wcy0)
+# Logical Architecture
+This viewpoint addresses the main components in the system. It's modelled with a UML class diagram. The logical architecture is a fairly simple server/client architecture. The backend handles the database and hands off time consuming processing tasks to a celery worker that processes out of the request/response loop. Objects are stored in S3 which the client accesses directly. 
+![Component Diagram](http://www.plantuml.com/plantuml/png/NP31gi8m44NtynNPFxfwErU5TbbG6yJrj1r2QqmaCnNzUmTBetLr9vTpu9AI1PFCLm-ncwWNK_cHWi0IPcTQGct_D8Vv0IjrfeuftIb1lfIj9mmkAboHf_HSh96pLQDWXqom7keS8ejBP8zDnlRli18JEeBDImNxRvhOepTMiBy0h5EBuclLf_lLRubuT846SseRXgmec_Tjs-sSaiAWt_K2)
 
 #### Rationale
  - Django was chosen for the webserver because the data model can be represented simply using Django Rest Framework and PostgreSQL. 
- - Because this design is not intended for deployment into a cloud environment it doesn't include typical web infrastructure such as proxy servers or loadbalancers, however these would be simple to add if needed. 
+ - Because this design is not intended for deployment into a cloud environment it doesn't include typical web infrastructure such as proxy servers or loadbalancers. 
  - S3 Object Storage was chosen for storing images, however rather than use the real AWS S3, this implementation uses AWS Local Stack to simulate S3 locally. 
  - React and Redux were chosen as industry standard powerful UI frameworks for frontend applications. There is good support for map based views.
- - FastAPI and Celery were chosen for the ML server so that computation heavy tasks can be taken out of the HTTP Request/Response cycle and offloaded onto worker nodes. These workers will carry out image processing tasks and stick the results into the database, they don't need to respond to the client making this is a natural architectural choice.
- - RabbitMQ is a reasonable choice of message queue that is opensource and plays nicely with Celery.
+ - Celery was chosen for handling computation heavy tasks that can be taken out of the HTTP Request/Response cycle and offloaded onto worker nodes. These workers will carry out image processing tasks and stick the results into the database, they don't need to respond to the client making this is a natural architectural choice. This saves on the complexity of having the front end poll for results.
+ - Redis is a reasonable choice of message queue that is opensource and plays nicely with Celery.
 
-## Image Upload 
+# Image Upload Sequence 
 This viewpoint explains how the components interact when a user uploads an image. It is modelled with a UML Sequence Diagram.
-![Sequence Diagram](http://www.plantuml.com/plantuml/png/VP71JiCm38RlUOeSuR0Nw66Q14SGXnquLbvhZK2MLh4BsjjZrDIP4U6okVRlpx-T0p5aNYxHmS1JzWynO68FL28tIpaCOGR9lkA9C7zYbdhzC9BdfwCgjjYDm702GlzoUiU1Zp88pYWIcwYwnoq0qjWvLypjzdLuvy_8_PoHmZdXs2yvtjsxQdGduhMjyqPrGxCkHBTm7ouI2icK34rWyvG86xOKqaijyDMwskjQdIU1us_jLhPK7MfOUkZEGu9ufK9h7a8fM-EVHuXHCQfh3bDLOpqPkKGckrbbgQLwJ7Nx1O6RJxyELtpZoBfEupqiTdZ3uMD3oZ-CFsg8x5T0A4ddQzUjuTBfC1AMbZJn_prLW6bq1_bPBl4R)
+![Sequence Diagram](http://www.plantuml.com/plantuml/png/TP6nReGm38RtF8N7ThWNO3YTrEuTEdH41YmklP2WsBJYxMifa3JeM4w--CldF-R6Wb6MoHdi9KHuSvQy0F9McLdRjhSpwkaNTKpnXwBsovyQ2V6H-gao0mfso0GVtJVrygb3S2G5weF2lUy5SgwDCLkmoxKCRc0aQUT8R4TFGxj4z_9gIiYBmkbQ0nNrprQdK6wHravQggbgLJQLpS4pdSJAabPxLjOwrJK_gm5MEHtPlLrRyz3QbTRS07fqAs-kqpLaHxhsT07EPKccpiTaulWe7RKuuVezsPE3k11c-BrRjw_1Skk3w7KSLWDm-jqJNQP00GvqVwV-iPD9VEJBXZRCa1_CJN-MoVq1)
 
-## Design Decisions
+#### Notes
+ - For reasons explained in the section on Extensions, I do not implement presigned URLs because localstack doesn't support them. 
+ - When the image is first registered with the backend, it defaults values of -1 to all the animal probabilities. When the front end requests the image, the backend checks to see if any of the probabilities are -1, if they are it marks the image as not_ready and the front end displays a loading symbol. At the same time that the image is first registered, the backend puts it in a queue for processing. When the worker gets around to processing the image, it updates the database. The client meanwhile continues to poll the backend every second whilst it still has images marked as not_ready.
+
+# Design Decisions
 
 #### Map behind everything. 
-I load and display the map behind everythingm including the login screen where it just blurs it and absorbs clicks. Upon login, the map becomes visible and everything is rendered on top. I did it this way because I thought the effect looked cool, it was achived by rendering the map on a div at one layer, and then having a div overlay on top using appropriate CSS settings to manage absolute positioning and to let clicks through. All components are rendered as children and passed into the map component.
+I load and display the map behind everything including the login screen where it just blurs it and absorbs clicks. Upon login, the map becomes visible and everything is rendered on top. I did it this way because I thought the effect looked cool, it was achived by rendering the map on a div at one layer, and then having a div overlay on top using appropriate CSS settings to manage absolute positioning and to let clicks through. All components are rendered as children and passed into the map component.
 
 #### Hard Coded Classes
-There are three classes in the system: Fox, badger, & Cat. These are stored as attributes of an Image object as three floats, which are ultimately stored in the PostGRES database. This is a very static and hardcoded approach, and probably not how I'd implement the system for real. The reason I adopted this approach is because it allowed me to take advantage of Django Rest Framework's filtering backend that lets me filter by the model fields easily. This makes the API call very nice as the client simply requests `?ordering=fox` to order by foxes, and Django handles the rest. It's fast too.
+There are three classes in the system: Fox, Rodent, & Bird. These are stored as attributes of an Image object as three floats, which are ultimately stored in the PostGRES database. This is a very static and hardcoded approach, and probably not how I'd implement the system for real. The reason I adopted this approach is because it allowed me to take advantage of Django Rest Framework's filtering backend that lets me filter by the model fields easily. This makes the API call very nice as the client simply requests `?ordering=fox` to order by foxes, and Django handles the rest. It's fast too.
 
 #### Authentication
-Users authenticate with a username and password by attempting to obtain a token. If the username and password are correct and associated with a user, and a token exists, it is returned to the client to allow them to authenticate with the token in the future.
+Users authenticate with a username and password by attempting to obtain a token. If the username and password are correct and associated with a user, and a token exists, it is returned to the client to allow them to authenticate with the token in the future. This is handled with Django Token Authentication and offers a reasonable out of the box auth solution.
 
 #### Authorisation
 When attempting to access the `camera` or `image` resources, the user must first be authenticated, this is done with Django IsAuthenticated permissions. Upon fetching a camera or list of cameras, the queryset filters by cameras where the associated user is the same as the requesting user. This works because a camera can only have one user. For images the logic is similar, except the camera ID must be provided as part of the requst, and only the images belonging to that camera are returned. In order to make sure the user is authenticated, it first checks that the requested camera ID belongs to the user.
@@ -78,16 +82,15 @@ When attempting to access the `camera` or `image` resources, the user must first
 In order for the PopUp (see Frontend Components below) to display the number of images in the popUp without doing any heavy lifting, the Camera Serializer in Django computes the count of the number of images associated with the camera object and returns it as an extra field which is accessible by the Frontend.
 
 #### Waiting Indicator
-Due to the asynchronous nature of the image upload and the time taken to process the images, it is possible (even likely) that the user will browse the images before their results have been computed. To indicate that results are still being computed, a little loading symbol is displayed against any images not yet complete. In order for the front end to know when to display this loading symbol, I compute an extra field called `waiting` inside the ImageSerializer which checks to see if all the Fox, Badger, and Cat fields are zero, because if they are then the image has not been processed (the ML model cannot predict a zero). This field is returned as part of the serialized image response.
+Due to the asynchronous nature of the image upload and the time taken to process the images, it is possible (even likely) that the user will browse the images before their results have been computed. To indicate that results are still being computed, a little loading symbol is displayed against any images not yet complete. In order for the front end to know when to display this loading symbol, I compute an extra field called `waiting` inside the ImageSerializer which checks to see if all the Fox, Rodent, and Bird fields are -1, because if they are then the image has not been processed. This field is returned as part of the serialized image response.
 
-## Front End Mocks
+# Front End
+
+#### Mocks
 I created these mockups as a guide to building the UI, the details are slightly different as I used the Evergreen UI component library. There are also other screens such as dialogs that aren't included here. I mocked these up as a rough idea of what I wanted to do, then filled in the gaps whilst coding the front end. A small project like this didn't require complete and accurate mockups up front, but just enough so I knew what features I'd need to build.
 
 ![Camera Dialog](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/mock_1.png)
 ![Browser](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/mock_2.png)
-
-## Front End Components
-Philosophy. Not particularly experienced building React apps. Previous experiences result in a tangled mess. This time I'm trying to keep things modular with less coupling and stronger boundaries.
 
 #### Map
 The map component is responsible for showing a browseable map and displaying the cameras in the right locations as icons. It also manages the cameras by handling the add/delete logic, including the necessary calls to the server. I designed it this way because I felt the cameras were inseparable to the map, it also made it easier because of the way icons are handled in mapbox. Speaking of which, I use mapbox to actually display the map.<br>
@@ -125,7 +128,7 @@ Upon submit, the components attempts to login on the backend by receiving a toke
 
 ![Login](https://github.com/HarryTurner93/project_thea_revamped/blob/main/artifacts/login.png)
 
-## Improvements
+# Improvements
 
 #### Security
 Most improvements are around security, partly because implementing them at the time was taking too much effort to get working and wasn't what I wanted to focus on in this project, so I deliberately skipped some best security practices and instead highlight them here.
