@@ -1,5 +1,5 @@
 # Thea
-An ML backed camera trap image processing system for managing and analysing camera trap images.
+An ML backed camera trap image processing system for managing and analysing camera trap images. For details on how this system was designed and built, see the [Design Document](https://github.com/HarryTurner93/thea/blob/main/DESIGN.md)
 
 # System Requirements
 
@@ -19,13 +19,3 @@ An ML backed camera trap image processing system for managing and analysing came
 - To run tests, first `cd` into the `frontend` directory then run `npx cypress run`. Note this requires `npm` to be installed.
 
 Note that the front end is deployed in production mode, I just map it to 3000 to avoid conflicts on my system.
-
-# Useful Commands
-See buckets - aws s3api list-buckets --endpoint-url http://localhost:4566
-
-## Todo
-Django Tests
-Update Call Model in Readme
-Add Readme Instructions for installation
-Final additions to write up.
-
