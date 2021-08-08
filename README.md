@@ -1,7 +1,7 @@
 # Thea
 An ML backed camera trap image processing system for managing and analysing camera trap images. For details on how this system was designed and built, see the [Design Document](https://github.com/HarryTurner93/thea/blob/main/DESIGN.md)
 
-### [See Demo (youtube)](https://www.youtube.com/watch?v=5tgIaj8bbSA)
+### [See Demo (redirects to youtube)](https://youtu.be/s9UlLipUJwE)
 
 ## System Requirements
 
