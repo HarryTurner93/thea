@@ -131,7 +131,7 @@ Upon submit, the components attempts to login on the backend by receiving a toke
 # Improvements
 
 #### Security
-Most improvements are around security, partly because implementing them at the time was taking too much effort to get working and wasn't what I wanted to focus on in this project, so I deliberately skipped some best security practices and instead highlight them here.
+Most improvements are around security, partly because implementing them at the time was taking too much effort to get working and wasn't what I wanted to focus on in this project, so I deliberately skipped some best security practices and instead highlight them here. Don't judge! I always take security seriously, this is just a demo project - security is one of the areas that would be given serious attention should this system be productionised! 
 
 **Public Image URLs** All images are accessible on the public S3 endpoint, whereas in reality I would generate presigned URLs. I did this because making presigned URLs work with localstack is a) complicated, and b) not the same as S3! It's actually much easier to generate presigned URLs when using the real S3 and I didn't want to waste time making it work for the development stack. To implement this, the FE would need to make another call to the BE to get the presigned URLs or have them returned in the image objects themselves.
 
